@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>青年大学生健康守护平台 · 不适自查与疾病预防</title>
+<meta name="description" content="面向大学生的健康自查平台：根据不舒服的位置或症状，初步了解可能的疾病方向、护理建议与就医提示。">
+<style>
+/* ================= 主题变量（阳光暖色调） ================= */
+:root{
+  --sun:#FF9F1C;          /* 主色：阳光橙 */
+  --sun-deep:#F77F00;
+  --teal:#2EC4B6;         /* 辅色：健康青 */
+  --sky:#4CC9F0;          /* 辅色：天空蓝 */
+  --cream:#FFF9EF;        /* 页面底色：奶油白 */
+  --ink:#3D3A36;          /* 正文墨色 */
+  --ink-soft:#7A736B;     /* 次级文字 */
+  --card:#FFFFFF;
+  --ok:#2A9D8F;
+  --warn:#E76F51;
+  --danger:#D62828;
+  --radius:16px;
+  --shadow:0 8px 24px rgba(247,127,0,.10), 0 2px 6px rgba(0,0,0,.06);
+  --shadow-lift:0 14px 34px rgba(247,127,0,.18), 0 4px 10px rgba(0,0,0,.08);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{
+  font-family:"PingFang SC","Microsoft YaHei","Segoe UI",system-ui,sans-serif;
+  background:var(--cream);color:var(--ink);line-height:1.65;font-size:15px;
+}
+img{max-width:100%;display:block}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+a{color:inherit;text-decoration:none}
+
+/* ================= 顶部导航 ================= */
+.navbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 22px;
+  background:rgba(255,255,255,.82);backdrop-filter:blur(12px);
+  box-shadow:0 1px 0 rgba(0,0,0,.05),0 4px 16px rgba(0,0,0,.04);
+}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:16px}
+.brand .logo{
+  width:34px;height:34px;border-radius:50%;
+  background:linear-gradient(135deg,var(--sun),var(--sun-deep));
+  display:flex;align-items:center;justify-content:center;font-size:18px;
+  box-shadow:0 4px 10px rgba(247,127,0,.35);
+}
+.brand small{display:block;font-weight:500;font-size:11px;color:var(--ink-soft);line-height:1.2}
+.nav-links{display:flex;gap:6px}
+.nav-links a{
+  padding:7px 14px;border-radius:999px;font-size:13px;font-weight:600;color:var(--ink-soft);
+  transition:.2s;
+}
+.nav-links a:hover{background:#FFF1DC;color:var(--sun-deep)}
+
+/* ================= Hero 首屏（阳光插画背景） ================= */
+.hero{
+  position:relative;min-height:92vh;
+  display:flex;align-items:center;justify-content:center;text-align:center;
+  padding:170px 22px 70px;overflow:hidden;
+  /* 阳光校园插画背景（在线生成，离线时自动退回渐变） */
+  background:
+    linear-gradient(180deg, rgba(255,214,130,.30) 0%, rgba(255,249,239,.72) 62%, var(--cream) 100%),
+    url("https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=cheerful%20sunny%20flat%20illustration%2C%20happy%20young%20Chinese%20college%20students%20walking%20and%20relaxing%20on%20green%20campus%20lawn%2C%20bright%20blue%20sky%20with%20soft%20clouds%2C%20warm%20golden%20sunlight%2C%20green%20trees%20and%20modern%20university%20buildings%2C%20sports%20and%20healthy%20energetic%20lifestyle%2C%20soft%20pastel%20colors%2C%20clean%20modern%20vector%20art%20style%2C%20wide%20landscape%20composition%2C%20no%20text%2C%20no%20watermark&image_size=landscape_16_9")
+    center/cover no-repeat,
+    linear-gradient(160deg,#FFE29A 0%,#A8E6FF 55%,#FFF9EF 100%);
+}
+.hero-inner{max-width:860px;position:relative;z-index:2}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,.85);border:1px solid #FFE1B3;
+  color:var(--sun-deep);font-weight:700;font-size:13px;
+  padding:7px 18px;border-radius:999px;box-shadow:var(--shadow);
+  animation:floatY 3.2s ease-in-out infinite;
+}
+.hero h1{
+  margin:22px 0 14px;font-size:clamp(30px,5.4vw,52px);font-weight:900;letter-spacing:2px;line-height:1.25;
+  background:linear-gradient(92deg,var(--sun-deep) 10%,var(--sun) 45%,var(--teal) 90%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  text-shadow:0 2px 18px rgba(255,255,255,.6);
+}
+.hero .sub{font-size:clamp(14px,2.2vw,18px);color:var(--ink-soft);max-width:620px;margin:0 auto}
+.hero-cta{margin-top:34px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:13px 30px;border-radius:999px;font-size:15px;font-weight:800;transition:.22s;
+}
+.btn-primary{
+  background:linear-gradient(135deg,var(--sun),var(--sun-deep));color:#fff;
+  box-shadow:0 8px 22px rgba(247,127,0,.38);
+}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(247,127,0,.46)}
+.btn-ghost{
+  background:rgba(255,255,255,.9);color:var(--sun-deep);border:1.5px solid #FFD9A8;
+}
+.btn-ghost:hover{transform:translateY(-3px);background:#fff}
+.hero-wave{position:absolute;bottom:-2px;left:0;right:0;z-index:1}
+
+@keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+
+/* ================= 通用区块 ================= */
+.section{max-width:1120px;margin:0 auto;padding:56px 22px}
+.sec-head{text-align:center;margin-bottom:34px}
+.sec-head h2{font-size:clamp(22px,3.4vw,30px);font-weight:900;letter-spacing:1px}
+.sec-head h2 .em{color:var(--sun-deep)}
+.sec-head p{color:var(--ink-soft);font-size:14px;margin-top:8px}
+
+/* 不适部位快速入口 */
+.part-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:34px}
+.part-chip{
+  display:flex;align-items:center;gap:8px;
+  padding:11px 20px;border-radius:999px;background:#fff;font-weight:700;font-size:14px;
+  border:1.5px solid #FFE6C7;color:var(--ink);box-shadow:0 3px 10px rgba(0,0,0,.05);transition:.2s;
+}
+.part-chip:hover{transform:translateY(-3px);border-color:var(--sun);box-shadow:var(--shadow-lift)}
+.part-chip .dot{font-size:17px}
+
+/* 疾病分类卡片 */
+.cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.cat-card{
+  position:relative;background:var(--card);border-radius:var(--radius);
+  padding:26px 20px 22px;box-shadow:var(--shadow);cursor:pointer;overflow:hidden;
+  transition:.25s;text-align:left;display:flex;flex-direction:column;gap:8px;
+  border:1.5px solid transparent;
+}
+.cat-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lift);border-color:#FFE0B0}
+.cat-card .icon{
+  width:52px;height:52px;border-radius:14px;font-size:26px;
+  display:flex;align-items:center;justify-content:center;margin-bottom:4px;
+}
+.cat-card h3{font-size:17px;font-weight:800}
+.cat-card p{font-size:12.5px;color:var(--ink-soft);flex:1}
+.cat-card .count{
+  align-self:flex-start;font-size:11.5px;font-weight:800;color:var(--sun-deep);
+  background:#FFF3E2;padding:4px 12px;border-radius:999px;
+}
+.cat-card::after{
+  content:"";position:absolute;right:-30px;top:-30px;width:90px;height:90px;border-radius:50%;
+  opacity:.10;background:radial-gradient(circle,var(--sun),transparent 70%);
+}
+/* 每类专属配色 */
+.cat-resp  .icon{background:#E3F7FD;color:#1B8FB8} .cat-resp:hover{border-color:#9ADCF0}
+.cat-digest.icon,.cat-digest .icon{background:#FFF0DC;color:#D97A06} .cat-digest:hover{border-color:#F5C98A}
+.cat-mind  .icon{background:#EEE6FF;color:#7B4FD9} .cat-mind:hover{border-color:#C9B2F5}
+.cat-sport .icon{background:#E4F8EE;color:#1E9E5A} .cat-sport:hover{border-color:#93E0B4}
+.cat-skin  .icon{background:#FFEAEA;color:#E05A5A} .cat-skin:hover{border-color:#F5A9A9}
+.cat-sense .icon{background:#E8F1FF;color:#2F6FD9} .cat-sense:hover{border-color:#A3C3F5}
+.cat-women .icon{background:#FDE7F1;color:#D9438B} .cat-women:hover{border-color:#F2A7CB}
+.cat-body  .icon{background:#FFF8DC;color:#C29400} .cat-body:hover{border-color:#EFD96A}
+
+/* ================= 首页全局搜索（同义词匹配） ================= */
+.hero-search{margin:26px auto 0;max-width:600px;position:relative;display:flex;gap:10px}
+.hero-search input{
+  flex:1;padding:14px 22px;border-radius:999px;border:1.5px solid #FFD9A8;
+  font-size:14.5px;outline:none;background:rgba(255,255,255,.96);
+  box-shadow:var(--shadow);transition:.2s;
+}
+.hero-search input:focus{border-color:var(--sun);box-shadow:var(--shadow-lift)}
+.hero-search .go{
+  padding:0 26px;border-radius:999px;color:#fff;font-weight:800;font-size:14.5px;
+  background:linear-gradient(135deg,var(--teal),#1F9E92);
+  box-shadow:0 6px 18px rgba(46,196,182,.35);transition:.2s;
+}
+.hero-search .go:hover{transform:translateY(-2px)}
+.sugg{
+  position:absolute;top:calc(100% + 8px);left:0;right:0;z-index:60;
+  background:#fff;border-radius:14px;border:1.5px solid #FFF0DC;
+  box-shadow:var(--shadow-lift);overflow:hidden;overflow-y:auto;max-height:264px;display:none;text-align:left;
+}
+.sugg.show{display:block}
+.sugg button{
+  display:flex;width:100%;align-items:center;gap:10px;padding:10px 16px;font-size:13.5px;
+  border-bottom:1px solid #FAF4EA;transition:.15s;text-align:left;
+}
+.sugg button:last-child{border-bottom:none}
+.sugg button:hover{background:#FFF6E6}
+.sugg .cat-mini{
+  flex-shrink:0;font-size:11px;font-weight:700;color:var(--sun-deep);
+  background:#FFF3E2;padding:2px 10px;border-radius:999px;
+}
+.hot-words{margin-top:14px;font-size:12.5px;color:var(--ink-soft)}
+.hot-words button{
+  color:#1F9E92;font-weight:700;font-size:12.5px;margin:0 3px;padding:3px 12px;
+  border-radius:999px;background:#E9FAF8;transition:.15s;
+}
+.hot-words button:hover{background:#D2F3EF;transform:translateY(-1px)}
+
+/* ================= 自查面板 ================= */
+.checker{display:none;animation:fadeUp .4s ease}
+.checker.active{display:block}
+.panel{
+  background:var(--card);border-radius:20px;box-shadow:var(--shadow);
+  padding:30px 28px;border:1.5px solid #FFF0DC;
+}
+.panel-top{display:flex;align-items:center;gap:14px;margin-bottom:6px;flex-wrap:wrap}
+.back-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:8px 16px;border-radius:999px;font-size:13px;font-weight:700;
+  background:#FFF3E2;color:var(--sun-deep);transition:.2s;
+}
+.back-btn:hover{background:#FFE6C4;transform:translateX(-2px)}
+.panel-top .cat-title{font-size:20px;font-weight:900;display:flex;align-items:center;gap:10px}
+.panel-top .cat-title .mini{font-size:22px}
+.panel-tip{font-size:13px;color:var(--ink-soft);margin-bottom:18px}
+.sym-search{display:flex;gap:10px;margin-bottom:14px}
+.sym-search input{
+  flex:1;padding:11px 18px;border-radius:999px;border:1.5px solid #EFE7DB;
+  font-size:13.5px;outline:none;background:#FAF7F2;transition:.2s;
+}
+.sym-search input:focus{border-color:var(--sun);background:#fff}
+.sym-cloud{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:24px;max-height:300px;overflow-y:auto;padding:2px}
+.sym-chip{
+  padding:8px 16px;border-radius:999px;font-size:13.5px;font-weight:600;
+  background:#FAF7F2;border:1.5px solid #EFE7DB;color:var(--ink-soft);transition:.18s;
+}
+.sym-chip:hover{border-color:var(--sun);color:var(--sun-deep)}
+.sym-chip.on{
+  background:linear-gradient(135deg,var(--sun),var(--sun-deep));
+  border-color:var(--sun-deep);color:#fff;box-shadow:0 4px 12px rgba(247,127,0,.3);
+}
+.panel-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.sel-count{font-size:13px;color:var(--ink-soft)}
+.sel-count b{color:var(--sun-deep);font-size:16px}
+.btn-analyze{
+  background:linear-gradient(135deg,var(--teal),#1F9E92);color:#fff;
+  padding:12px 28px;border-radius:999px;font-weight:800;font-size:14.5px;
+  box-shadow:0 6px 18px rgba(46,196,182,.35);transition:.2s;
+}
+.btn-analyze:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(46,196,182,.45)}
+.btn-analyze:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.btn-clear{font-size:13px;color:var(--ink-soft);padding:8px 14px;border-radius:999px}
+.btn-clear:hover{background:#F4EFE8;color:var(--danger)}
+
+.cat-badge{
+  flex-shrink:0;font-size:11px;font-weight:800;color:var(--sun-deep);
+  background:#FFF3E2;padding:3px 10px;border-radius:999px;
+}
+
+/* ================= 推断结果 ================= */
+.results{display:none;margin-top:26px;animation:fadeUp .45s ease}
+.results.active{display:block}
+.results-head{
+  display:flex;align-items:baseline;justify-content:space-between;gap:10px;
+  margin-bottom:16px;flex-wrap:wrap;
+}
+.results-head h3{font-size:18px;font-weight:900}
+.results-head span{font-size:12.5px;color:var(--ink-soft)}
+.res-card{
+  background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);
+  padding:20px 22px;margin-bottom:14px;border:1.5px solid #FFF0DC;
+  animation:fadeUp .4s ease both;
+}
+.res-card:hover{box-shadow:var(--shadow-lift)}
+.res-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.res-top h4{font-size:16.5px;font-weight:800;display:flex;align-items:center;gap:8px}
+.match-badge{
+  flex-shrink:0;font-weight:900;font-size:13px;color:#fff;
+  background:linear-gradient(135deg,var(--teal),#1F9E92);
+  padding:5px 14px;border-radius:999px;
+}
+.match-badge.hot{background:linear-gradient(135deg,var(--warn),#C9401A)}
+.sym-tags{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0 4px}
+.tag{font-size:12px;padding:4px 11px;border-radius:999px}
+.tag.hit{background:#E4F8EE;color:#1E7A48;font-weight:700}
+.tag.rest{background:#F6F3EE;color:#A39A8E}
+.res-detail{margin-top:12px;display:grid;gap:8px}
+.res-detail .row{font-size:13px;display:flex;gap:8px;line-height:1.6}
+.res-detail .row .k{flex-shrink:0;font-weight:800}
+.res-detail .row.care .k{color:var(--ok)}
+.res-detail .row.otc  .k{color:#2F6FD9}
+.res-detail .row.taboo .k{color:var(--warn)}
+.res-warn{
+  margin-top:12px;padding:11px 14px;border-radius:12px;font-size:13px;font-weight:600;
+  background:#FDECEC;color:#B3261E;border:1px solid #F5C6C2;display:flex;gap:8px;
+}
+.res-warn.safe{background:#EFFAF7;color:#137A6E;border-color:#BEE8E0}
+
+/* ---------- 分类自测（每类5题 · 每题20分 · 满分100） ---------- */
+.btn-quiz{
+  padding:12px 24px;border-radius:999px;font-weight:800;font-size:14.5px;transition:.2s;
+  background:#fff;color:var(--sun-deep);border:1.5px solid #FFD9A8;
+}
+.btn-quiz:hover{transform:translateY(-2px);background:#FFF6E6;box-shadow:var(--shadow)}
+.quiz-head-row{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.quiz-progress{font-size:12.5px;font-weight:800;color:var(--sun-deep);background:#FFF3E2;padding:4px 14px;border-radius:999px}
+.quiz-exit{
+  font-size:12.5px;font-weight:700;color:var(--ink-soft);padding:5px 14px;border-radius:999px;transition:.15s;
+}
+.quiz-exit:hover{background:#F4EFE8;color:var(--danger)}
+.quiz-exp-line{margin-top:10px;font-size:13px;font-weight:700;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.quiz-exp-line .ans{color:var(--ok)}
+.quiz-exp-line .bad{color:var(--danger)}
+.quiz-why{
+  padding:8px 20px;border-radius:999px;font-size:13px;font-weight:800;
+  color:var(--teal);background:#E9FAF8;transition:.2s;
+}
+.quiz-why:hover{background:#D2F3EF;transform:translateY(-2px)}
+.quiz-explain{
+  margin-top:10px;padding:12px 14px;border-radius:10px;font-size:12.5px;line-height:1.9;
+  background:#F4FAF9;border:1px solid #CBEAE5;
+}
+.quiz-src{font-weight:800;color:#1B8FB8;margin-bottom:4px}
+.quiz-box{
+  margin-top:14px;background:#FFFBF3;border:1.5px dashed #F0DDBA;
+  border-radius:12px;padding:14px 16px;
+}
+.quiz-q{font-size:13.5px;font-weight:800;margin-bottom:10px;line-height:1.6}
+.quiz-opts{display:flex;flex-direction:column;gap:8px}
+.quiz-opt{
+  text-align:left;padding:10px 14px;border-radius:10px;font-size:13px;line-height:1.6;
+  border:1.5px solid #EFE3CC;background:#fff;transition:.15s;
+}
+.quiz-opt:not(:disabled):hover{border-color:var(--sun);transform:translateX(2px)}
+.quiz-opt.right{background:#E4F8EE;border-color:#7BD3A2;color:#1E7A48;font-weight:700}
+.quiz-opt.wrong{background:#FDECEC;border-color:#F0A8A2;color:#B3261E;font-weight:700}
+.quiz-opt.dim{opacity:.55}
+.quiz-opt:disabled{cursor:default}
+.quiz-exp{margin-top:10px;font-size:12.5px;line-height:1.8}
+.quiz-exp .ans{font-weight:800;color:var(--ok)}
+.quiz-exp .bad{font-weight:800;color:var(--danger)}
+.quiz-foot{margin-top:10px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.quiz-next{
+  padding:8px 20px;border-radius:999px;font-size:13px;font-weight:800;color:#fff;
+  background:linear-gradient(135deg,var(--sun),var(--sun-deep));transition:.2s;
+}
+.quiz-next:hover{transform:translateY(-2px)}
+.quiz-score{
+  margin-top:4px;padding:12px 16px;border-radius:10px;font-weight:800;font-size:13.5px;
+  background:#FFF3E2;color:var(--sun-deep);
+  display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;
+}
+.quiz-redo{
+  padding:7px 16px;border-radius:999px;font-size:12.5px;font-weight:800;
+  color:var(--teal);background:#E9FAF8;transition:.2s;
+}
+.quiz-redo:hover{background:#D2F3EF}
+.res-empty{
+  text-align:center;padding:36px 20px;color:var(--ink-soft);
+  background:#fff;border-radius:var(--radius);border:1.5px dashed #EBDFCE;
+}
+
+/* ================= 免责声明 / 页脚 ================= */
+.disclaimer{
+  margin:26px auto 0;max-width:1120px;padding:0 22px 10px;
+}
+.disclaimer .box{
+  background:#FFF6E3;border:1.5px solid #F5DFAF;border-radius:14px;
+  padding:16px 20px;font-size:12.5px;color:#8A6A1F;line-height:1.8;
+}
+footer{
+  margin-top:40px;padding:26px 22px 34px;text-align:center;
+  background:linear-gradient(180deg,transparent,#FFF1D9);
+  color:var(--ink-soft);font-size:12.5px;line-height:2;
+}
+footer .slogan{font-weight:800;color:var(--sun-deep);font-size:14px;letter-spacing:2px}
+footer .contest-line{font-weight:800;color:#1F9E92;font-size:13px;letter-spacing:1px}
+
+/* 活动主题横幅（与导航同属固定顶栏） */
+.top-fixed{position:fixed;top:0;left:0;right:0;z-index:100}
+.contest-ribbon{
+  background:linear-gradient(90deg,#FFB84D,#FF8A65 40%,#2EC4B6);
+  color:#fff;text-align:center;font-weight:800;font-size:13px;letter-spacing:1.5px;
+  padding:8px 16px 9px;line-height:1.6;text-shadow:0 1px 2px rgba(0,0,0,.15);
+}
+.contest-ribbon b{font-size:13.5px}
+
+/* Toast 提示 */
+.toast{
+  position:fixed;left:50%;bottom:36px;transform:translateX(-50%) translateY(20px);
+  background:rgba(61,58,54,.92);color:#fff;font-size:13px;font-weight:600;
+  padding:11px 22px;border-radius:999px;opacity:0;pointer-events:none;transition:.3s;z-index:200;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* 动画 */
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+/* ================= 移动端适配 ================= */
+@media (max-width:860px){
+  .cat-grid{grid-template-columns:repeat(2,1fr)}
+  .nav-links a{padding:6px 10px;font-size:12px}
+}
+@media (max-width:520px){
+  body{font-size:14px}
+  .cat-grid{grid-template-columns:repeat(2,1fr);gap:12px}
+  .cat-card{padding:18px 14px}
+  .cat-card .icon{width:42px;height:42px;font-size:21px}
+  .hero{min-height:86vh;padding-top:150px}
+  .contest-ribbon{font-size:12px;padding:7px 12px 8px;letter-spacing:1px}
+  .navbar{padding:8px 14px}
+  .brand small{display:none}
+  .panel{padding:22px 16px}
+  .section{padding:44px 16px}
+}
+</style>
+</head>
+<body>
+<!-- 固定顶栏：活动主题横幅 + 导航 -->
+<div class="top-fixed">
+  <div class="contest-ribbon">🧡 争做校园好网民 · 汇聚网络正能量 · 奋进强国新征程<br><b>—— 桂林医科大学2026年网络文化节参赛作品 ——</b></div>
+
+  <!-- ============ 顶部导航 ============ -->
+  <nav class="navbar">
+    <a class="brand" href="#top">
+      <span class="logo">☀️</span>
+      <span>青年健康守护<small>大学生疾病预防与分析平台</small></span>
+    </a>
+    <div class="nav-links">
+      <a href="#cats">疾病分类</a>
+      <a href="#check">开始自查</a>
+      <a href="#disclaimer">温馨提示</a>
+    </div>
+  </nav>
+</div>
+
+<!-- ============ 首屏：主题 + 阳光插画背景 ============ -->
+<header class="hero" id="top">
+  <div class="hero-inner">
+    <span class="hero-badge">🌸 阳光青春 · 健康相伴</span>
+    <h1>青年大学生<br>健康守护平台</h1>
+    <p class="sub">哪里不舒服？选位置、选症状，帮你快速了解可能的健康问题方向，<br>附护理建议、OTC 用药参考与就医提示 —— 做自己健康的第一责任人。</p>
+    <!-- 全局症状搜索：支持口语同义词，跨分类匹配 -->
+    <div class="hero-search">
+      <input id="globalSearchInput" placeholder="哪里不舒服？直接说：拉肚子 / 睡不着 / 崴脚 / 长痘"
+             oninput="onSearchInput()" onkeydown="if(event.key==='Enter'){globalSearch()}" autocomplete="off">
+      <button class="go" onclick="globalSearch()">🔍 查一查</button>
+      <div class="sugg" id="suggBox"></div>
+    </div>
+    <div class="hot-words">🔥 热门搜索：
+      <button onclick="quickSearch('拉肚子')">拉肚子</button>
+      <button onclick="quickSearch('睡不着')">睡不着</button>
+      <button onclick="quickSearch('崴脚')">崴脚</button>
+      <button onclick="quickSearch('长痘')">长痘</button>
+      <button onclick="quickSearch('痛经')">痛经</button>
+      <button onclick="quickSearch('牙疼')">牙疼</button>
+      <button onclick="quickSearch('焦虑')">焦虑</button>
+    </div>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#cats">🩺 开始健康自查</a>
+      <a class="btn btn-ghost" href="#cats">📂 浏览疾病分类</a>
+    </div>
+  </div>
+</header>
+
+<!-- ============ 疾病分类选择 ============ -->
+<section class="section" id="cats">
+  <div class="sec-head">
+    <h2>第一步 · 选择<span class="em">不舒服的部位</span></h2>
+    <p>点击身体部位或疾病大类，进入症状勾选，系统将为你初步匹配可能的情况</p>
+  </div>
+  <div class="part-row" id="partRow"><!-- 部位快捷入口 JS 渲染 --></div>
+  <div class="cat-grid" id="catGrid"><!-- 分类卡片 JS 渲染 --></div>
+</section>
+
+<!-- ============ 症状自查面板 ============ -->
+<section class="section" id="check">
+  <div class="checker" id="checker">
+    <div class="panel">
+      <div class="panel-top">
+        <button class="back-btn" onclick="backToCats()">← 返回分类</button>
+        <span class="cat-title" id="checkTitle"></span>
+      </div>
+      <p class="panel-tip">第二步 · 勾选你目前出现的症状（可多选）后点「开始推断」；也可以直接点「分类自测」挑战 5 道题</p>
+      <!-- 症状筛选：支持口语同义词 -->
+      <div class="sym-search" id="symSearchWrap">
+        <input id="symSearchInput" placeholder="🔍 快速筛选症状，支持口语同义词（如：拉肚子、睡不着）" oninput="filterSyms()">
+        <button class="btn-clear" onclick="clearFilter()">显示全部</button>
+      </div>
+      <div class="sym-cloud" id="symCloud"></div>
+      <div class="panel-actions" id="panelActions">
+        <button class="btn-analyze" id="analyzeBtn" onclick="analyze()" disabled>🔍 开始推断</button>
+        <button class="btn-quiz" id="quizEntryBtn" onclick="startCatQuiz()">📝 分类自测 5 题</button>
+        <button class="btn-clear" onclick="clearSel()">清空已选</button>
+        <span class="sel-count">已选 <b id="selNum">0</b> 个症状</span>
+      </div>
+      <!-- 分类自测面板（每类5题，随机抽取） -->
+      <div class="quiz-box" id="catQuiz" style="display:none"></div>
+    </div>
+    <div class="results" id="results">
+      <div class="results-head">
+        <h3>🧐 可能的情况（按匹配度排序）</h3>
+        <span style="display:inline-flex;align-items:center;gap:12px">
+          <span>仅为初步参考，不能替代医生诊断</span>
+          <button class="back-btn" onclick="backToCats()">← 返回分类</button>
+        </span>
+      </div>
+      <div id="resList"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 免责声明 ============ -->
+<section class="disclaimer" id="disclaimer">
+  <div class="box">
+    ⚠️ <b>重要提示：</b>本平台内容基于大学生常见病症科普整理，仅作健康知识参考与初步方向提示，
+    <b>不构成医学诊断、不提供处方建议</b>。症状持续、加重或出现高烧、剧烈疼痛、呼吸困难、意识异常等紧急情况时，
+    请立即前往校医院或正规医疗机构就诊，紧急情况请拨打 <b>120</b>。
+  </div>
+</section>
+
+<!-- ============ 页脚 ============ -->
+<footer>
+  <div class="slogan">☀️ 早预防 · 会识别 · 不慌张 —— 守护每一段阳光青春</div>
+  <div class="contest-line">🏆 「争做校园好网民，汇聚网络正能量，奋进强国新征程」桂林医科大学2026年网络文化节参赛作品</div>
+  <div>青年大学生健康守护平台 | 数据来源：大学生常见病症科普卡（106 条）</div>
+  <div>科普内容仅供参考 · 如有不适请及时前往校医院 / 正规医疗机构诊疗</div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ================= 数据（由 106病症卡片.txt 自动解析生成） ================= */
+const DATA = {"cats":[{"id":"resp","name":"呼吸系统","icon":"🫁","desc":"感冒、鼻炎、咽炎、流感等呼吸道不适","count":17},{"id":"digest","name":"消化系统","icon":"🍚","desc":"肠胃不适、腹泻便秘、消化问题","count":15},{"id":"mind","name":"心理健康","icon":"🧠","desc":"压力、失眠、焦虑、神经性不适","count":10},{"id":"sport","name":"运动与损伤","icon":"🏃","desc":"运动损伤、肌肉骨骼、久坐劳损","count":13},{"id":"skin","name":"皮肤问题","icon":"🩹","desc":"痘痘、过敏、晒伤、蚊虫叮咬","count":23},{"id":"sense","name":"五官问题","icon":"👁️","desc":"口腔、牙齿、眼睛、耳朵不适","count":13},{"id":"women","name":"女性与泌尿","icon":"🚺","desc":"经期问题、泌尿系统不适","count":5},{"id":"body","name":"全身与生活","icon":"❤️","desc":"中暑、贫血、营养、生活方式","count":10}],"diseases":[{"title":"普通病毒性感冒","cat":"resp","symptoms":["鼻塞","清水样鼻涕","咽干","低烧≤38℃","轻度乏力"],"care":"多饮温水、早睡、少吹空调直吹","otc":"对乙酰氨基酚（退烧）、布洛芬（肌肉痛，二选一）；氯雷他定/西替利嗪（流涕喷嚏）；西瓜霜含片（咽痛）","taboo":"自行服用阿莫西林/头孢（病毒无效）；多种复方感冒药叠加；服药后喝酒","warn":"高烧≥38.5℃超3天、咳脓痰、呼吸急促立即就医；复方药大多含对乙酰氨基酚，叠加伤肝","quiz":[{"q":"同学感冒发烧，以下做法正确的是？","a":"先吃头孢预防感染（❌）","b":"对乙酰氨基酚+多饮温水观察（✅）","correct":"B"},{"q":"感冒流涕严重，哪种做法有肝损伤风险？","a":"同时吃两种复方感冒药（❌危险）","b":"只吃氯雷他定缓解（✅安全）","correct":"B"},{"q":"以下哪种情况必须立刻就医？","a":"低烧1天喉咙痛（❌观察）","b":"高烧3天胸闷（✅就医）","correct":"B"}]},{"title":"过敏性鼻炎","cat":"resp","symptoms":["晨起连续打喷嚏","清水样鼻涕","鼻痒不发烧"],"care":"生理盐水洗鼻、床单勤晒","otc":"氯雷他定、西替利嗪（口服）；盐酸羟甲唑啉鼻喷剂（连续≤7天）；生理盐水洗鼻剂","taboo":"羟甲唑啉连续喷鼻超过7天；自行服用抗生素","warn":"通鼻喷雾最多用7天，久用引发药物性鼻炎；脓涕黄涕、面部胀痛及时就医","quiz":[{"q":"过敏性鼻炎鼻塞，羟甲唑啉最多连续用几天？","a":"用两周以上（❌危险）","b":"≤7天（✅正确）","correct":"B"},{"q":"鼻炎发作可以吃阿莫西林吗？","a":"鼻塞严重就吃（❌无效）","b":"过敏性鼻炎不能吃抗生素（✅正确）","correct":"B"},{"q":"以下什么情况应就医？","a":"清水鼻涕（❌）","b":"流黄脓涕+面部胀痛（✅就医）","correct":"B"}]},{"title":"急性咽炎、咽痛","cat":"resp","symptoms":["咽部干痛","吞咽时加重","轻微红肿无脓点"],"care":"温盐水漱口、多饮温水、少说话","otc":"复方氯己定含漱液；西瓜霜含片、草珊瑚含片；润喉糖","taboo":"自行服用头孢/阿莫西林；继续熬夜背书不休息","warn":"伴随高烧38.5℃以上、扁桃体有白色脓苔→就医查血常规排查细菌感染","quiz":[{"q":"咽痛吃什么药才对？","a":"头孢马上吃（❌）","b":"先用氯己定含漱液观察（✅）","correct":"B"},{"q":"什么情况下需要马上去医院？","a":"嗓子痛1天（❌）","b":"高烧+扁桃体有脓点（✅就医）","correct":"B"},{"q":"咽炎护理哪个是对的？","a":"熬夜背书+冰水漱口（❌）","b":"温盐水漱口+少说话（✅）","correct":"B"}]},{"title":"急性鼻窦炎","cat":"resp","symptoms":["流脓涕","面部额头胀痛","低头时加重","嗅觉减退"],"care":"生理盐水洗鼻、温毛巾敷脸","otc":"生理盐水洗鼻剂；布洛芬/对乙酰氨基酚（缓解头痛）；无OTC抗菌药","taboo":"自行服用头孢类抗生素；用力擤鼻涕（两侧一起捏）","warn":"流脓涕超过7天、面部剧烈胀痛、高烧→必须就医，可能需要抗生素","quiz":[{"q":"流脓涕一周还没好怎么办？","a":"自行买头孢吃（❌）","b":"就医查鼻窦（✅）","correct":"B"},{"q":"擤鼻涕正确做法？","a":"两侧鼻孔一起用力擤（❌危险）","b":"一侧一侧轻柔擤（✅）","correct":"B"},{"q":"鼻窦炎可用OTC药？","a":"头孢拉定（❌处方药）","b":"生理盐水洗鼻+布洛芬止痛（✅）","correct":"B"}]},{"title":"急性扁桃体炎（病毒性）","cat":"resp","symptoms":["咽痛","扁桃体红肿","无脓苔","低热38℃左右"],"care":"温盐水含漱、流质饮食、少说话","otc":"对乙酰氨基酚（退烧止痛）；复方氯己定含漱液","taboo":"自行服用阿莫西林/头孢；食用麻辣/过烫食物","warn":"扁桃体出现白色脓苔、高烧超38.5℃、颈部淋巴结肿痛→就医查细菌感染","quiz":[{"q":"病毒性扁桃体炎首选？","a":"头孢克肟（❌）","b":"对乙酰氨基酚+氯己定含漱（✅）","correct":"B"},{"q":"什么时候一定要就医？","a":"低烧+喉咙微痛（❌）","b":"扁桃体有脓苔+高烧（✅）","correct":"B"},{"q":"饮食要注意什么？","a":"麻辣烫加冰可乐提神（❌）","b":"温粥+多饮温水（✅）","correct":"B"}]},{"title":"花粉过敏","cat":"resp","symptoms":["眼痒眼红","连续打喷嚏","清涕","偶有皮疹"],"care":"戴口罩、眼镜、回家洗脸、少开窗","otc":"氯雷他定/西替利嗪；奥洛他定滴眼液（眼痒）；生理盐水洗鼻","taboo":"自行用抗生素滴眼液；过敏药加量翻倍吃","warn":"出现喉咙发紧、呼吸困难→过敏性休克前兆，立刻急诊","quiz":[{"q":"花粉过敏眼痒怎么办？","a":"抗生素滴眼液点眼（❌）","b":"氯雷他定口服+出门戴眼镜（✅）","correct":"B"},{"q":"哪种情况立即急诊？","a":"流清涕打喷嚏（❌）","b":"喉咙发紧呼吸困难（✅急症）","correct":"B"},{"q":"预防花粉过敏正确？","a":"开窗通风让花进来（❌）","b":"戴口罩+回家洗脸洗手（✅）","correct":"B"}]},{"title":"感冒后咳嗽干咳","cat":"resp","symptoms":["干咳少痰","咽部发痒","躺下时加重"],"care":"多喝温水、避免冰饮、减少说话","otc":"右美沙芬镇咳（干咳）；氯雷他定抗组胺；无OTC复方镇咳药不要叠加","taboo":"长期连续吃右美沙芬超过7天；叠吃多种止咳药；头孢口服","warn":"咳嗽超2周未愈、伴午后低热/盗汗/痰血→排查肺结核，立刻就医","quiz":[{"q":"干咳无痰用什么？","a":"头孢（❌）","b":"右美沙芬（✅）","correct":"B"},{"q":"咳嗽超2周必须？","a":"一直吃止咳药（❌）","b":"就医排查结核（✅）","correct":"B"},{"q":"咳嗽时护理？","a":"冰奶茶冰咖啡（❌）","b":"多饮温水（✅）","correct":"B"}]},{"title":"感冒后痰多","cat":"resp","symptoms":["黄痰/白痰","咽部痰堵"],"care":"多喝温水、轻拍背排痰、戒烟（二手烟）","otc":"氨溴索/乙酰半胱氨酸（祛痰）；不要镇咳！要排痰","taboo":"右美沙芬镇咳+氨溴索一起（痰堵窒息）；自己吃抗生素","warn":"痰中带血、高烧、气促→就医；祛痰药和镇咳药严禁联用","quiz":[{"q":"痰多黄痰用什么药？","a":"右美沙芬镇咳（❌堵痰）","b":"氨溴索祛痰（✅）","correct":"B"},{"q":"镇咳+祛痰一起？","a":"效果更好（❌危险）","b":"绝对禁止（✅）","correct":"B"},{"q":"痰中带血怎么办？","a":"继续观察（❌）","b":"立刻就医（✅）","correct":"B"}]},{"title":"诺如病毒感染","cat":"digest","symptoms":["突发呕吐（喷射）","水样腹泻","轻度低烧","浑身酸痛"],"care":"补液+隔离","otc":"口服补液盐Ⅲ（最关键，防脱水）；蒙脱石散（必要时）","taboo":"自行吃诺氟沙星等抗生素（病毒无效）；回学校上课传染舍友","warn":"呕吐物/粪便带血、尿少口干脱水严重→急诊；宿舍消毒避免传染","quiz":[{"q":"诺如呕吐腹泻最关键？","a":"先止吐药+头孢（❌）","b":"口服补液盐防脱水（✅）","correct":"B"},{"q":"患诺如要隔离吗？","a":"继续上课（❌传染）","b":"居家/宿舍隔离+消毒（✅）","correct":"B"},{"q":"什么情况急诊？","a":"水样腹泻1次（❌）","b":"尿少+口干+精神差（✅脱水）","correct":"B"}]},{"title":"支原体感染轻症","cat":"resp","symptoms":["顽固刺激性干咳","乏力","低热","咽喉痛"],"care":"隔离休息、多饮温水","otc":"布洛芬/对乙酰氨基酚（退热止痛）；右美沙芬（干咳）","taboo":"自行买阿奇霉素等抗生素（处方药）；带病上课/训练","warn":"咳嗽超10天、高热≥39℃、胸闷→就医查支原体抗体，需抗生素","quiz":[{"q":"支原体轻症能吃阿奇霉素吗？","a":"自己网购吃（❌处方药违法）","b":"就医确诊后医生开（✅）","correct":"B"},{"q":"轻症先怎么处理？","a":"休息+退热+止咳观察（✅）","b":"立刻头孢+阿奇都吃（❌）","correct":"A"},{"q":"必须就医？","a":"干咳2天低烧（❌）","b":"咳嗽10天+胸闷（✅）","correct":"B"}]},{"title":"肺结核可疑症状","cat":"resp","symptoms":["咳嗽超2周","午后低热37.5℃左右","夜间盗汗","消瘦","痰中带血"],"care":"立即就医！无OTC处理","otc":"无！止咳药掩盖病情，禁用","taboo":"自己吃止咳药掩盖症状继续上课；不戴口罩和舍友密切接触","warn":"咳嗽超2周→立即到校医院/疾控中心拍胸片+痰检！肺结核是法定传染病","quiz":[{"q":"咳嗽多久必须排查结核？","a":"1周（❌）","b":"超过2周伴低热盗汗（✅）","correct":"B"},{"q":"痰中带血怎么办？","a":"吃止咳药观察（❌）","b":"立即就医胸片+痰检（✅）","correct":"B"},{"q":"怀疑结核室友？","a":"同吃同住无所谓（❌）","b":"催促就医并戴口罩防护（✅）","correct":"B"}]},{"title":"水痘","cat":"resp","symptoms":["低烧1天后出皮疹","先躯干后全身","水疱分批出现","极痒"],"care":"隔离、衣物烫洗、不要抓","otc":"对乙酰氨基酚（退烧）；炉甘石洗剂（止痒）；氯雷他定（止痒抗过敏）","taboo":"布洛芬（可能Reye综合征风险）；糖皮质激素药膏；阿司匹林；抓破水泡","warn":"脸部严重皮疹、高烧不退、胸痛/神志改变→重症水痘急诊；高度传染立即隔离","quiz":[{"q":"水痘退烧首选？","a":"布洛芬（❌风险）","b":"对乙酰氨基酚（✅）","correct":"B"},{"q":"水痘水疱能抓吗？","a":"抓破好得快（❌留疤感染）","b":"炉甘石+剪指甲防抓（✅）","correct":"B"},{"q":"水痘同学怎么办？","a":"继续上课（❌）","b":"严格隔离2周，结痂脱落才返校（✅）","correct":"B"}]},{"title":"手足口病","cat":"resp","symptoms":["手","足","口腔黏膜水疱","咽痛低烧"],"care":"流质饮食、隔离、口腔清洁","otc":"对乙酰氨基酚（退烧）；复方氯己定含漱液（口腔）","taboo":"刺破水疱；自行服用抗病毒药（处方药）；辛辣烫食","warn":"持续高烧、抽搐、精神差、呼吸急促→重症脑炎风险，立刻急诊","quiz":[{"q":"手足口水疱能挑破吗？","a":"挑破好得快（❌）","b":"不能挑破防感染（✅）","correct":"B"},{"q":"手足口能上学吗？","a":"能（❌传染）","b":"隔离至水疱结痂（✅）","correct":"B"},{"q":"什么情况紧急？","a":"口腔痛1天（❌）","b":"高烧+抽搐精神差（✅）","correct":"B"}]},{"title":"带状疱疹","cat":"resp","symptoms":["单侧胸/腰背/面部","簇集性水疱+剧烈针刺样疼痛"],"care":"不要抓、保持干燥、休息","otc":"对乙酰氨基酚（止痛）；炉甘石洗剂（水疱未破）；无OTC抗病毒药","taboo":"自行用激素药膏；挤压水疱；面部皮疹忽视","warn":"发病72小时内是抗病毒黄金时间→立刻就医；头面部、眼周皮疹→急诊防失明面瘫","quiz":[{"q":"带状疱疹最重要？","a":"止痛药自己扛（❌）","b":"72小时内就医抗病毒（✅）","correct":"B"},{"q":"水疱能涂激素膏吗？","a":"止痒就行（❌加重）","b":"禁用激素（✅）","correct":"B"},{"q":"眼周带状疱疹怎么办？","a":"观察（❌失明风险）","b":"立刻眼科+皮肤科急诊（✅）","correct":"B"}]},{"title":"消化不良、积食腹胀","cat":"digest","symptoms":["上腹胀满","嗳气","食欲差","轻微恶心"],"care":"散步揉腹、清淡饮食、少食多餐","otc":"健胃消食片；乳酶生片；多潘立酮（促胃动力，短期）","taboo":"多潘立酮长期连续服用超1周；饭后剧烈运动；继续吃重口外卖","warn":"持续性腹痛、呕吐咖啡渣样物、黑便→就医（胃溃疡/出血）","quiz":[{"q":"腹胀积食首选？","a":"多潘立酮+长期吃（❌）","b":"健胃消食片+清淡饮食（✅）","correct":"B"},{"q":"多潘立酮最多用多久？","a":"连续1个月（❌风险）","b":"≤7天短期（✅）","correct":"B"},{"q":"黑便腹痛怎么办？","a":"再观察几天（❌）","b":"就医排查胃出血（✅）","correct":"B"}]},{"title":"轻度反酸、反流","cat":"digest","symptoms":["烧心","胸口灼热","反酸水到喉咙","咽喉异物感"],"care":"抬高床头、少食多餐","otc":"铝碳酸镁咀嚼片（中和胃酸）；法莫替丁（抑酸，短期）","taboo":"法莫替丁连用>7天；长期自行抑酸不就医；喝完咖啡就躺","warn":"反复烧心≥2周、吞咽痛、黑便→就医排查胃溃疡/反流性食管炎","quiz":[{"q":"反酸首选？","a":"法莫替丁连续用1个月（❌）","b":"铝碳酸镁咀嚼+少喝咖啡（✅）","correct":"B"},{"q":"睡前吃东西会加重吗？","a":"不影响（❌）","b":"会，睡前2小时禁食（✅）","correct":"B"},{"q":"烧心2周未愈？","a":"加量抑酸药（❌）","b":"就医（✅）","correct":"B"}]},{"title":"非感染性轻度腹泻","cat":"digest","symptoms":["稀便2-3次/天","无脓血","无高烧","肠鸣"],"care":"补液、清淡饮食","otc":"蒙脱石散；口服补液盐Ⅲ（最重要）","taboo":"自行服用诺氟沙星等抗生素；蒙脱石+其他药同服（间隔1-2h）；喝纯牛奶","warn":"脓血便、高烧、脱水（口干尿少）→就医","quiz":[{"q":"轻度腹泻首选？","a":"诺氟沙星（❌抗生素）","b":"蒙脱石散+口服补液盐（✅）","correct":"B"},{"q":"蒙脱石和其他药？","a":"一起吞（❌吸附失效）","b":"间隔1-2小时（✅）","correct":"B"},{"q":"脓血便怎么办？","a":"加量蒙脱石（❌）","b":"立即就医（✅）","correct":"B"}]},{"title":"便秘","cat":"digest","symptoms":["每周排便<3次","便干硬","排便费力"],"care":"饮水+蔬果+运动","otc":"乳果糖口服溶液（温和）；开塞露（仅应急，短期）","taboo":"长期每日使用开塞露；网红通便茶、酵素、果导（泻药依赖/大肠黑变）","warn":"便秘超2周未缓解、便血、剧烈腹痛→就医排查肠梗阻","quiz":[{"q":"便秘日常用什么？","a":"开塞露天天用（❌依赖）","b":"乳果糖+多吃青菜饮水（✅）","correct":"B"},{"q":"网红通便茶能长期？","a":"能（❌大肠黑变）","b":"绝对不行（✅）","correct":"B"},{"q":"便秘+便血腹痛？","a":"加倍泻药（❌）","b":"就医（✅）","correct":"B"}]},{"title":"胃肠痉挛（阵发性绞痛）","cat":"digest","symptoms":["突发脐周/下腹一阵一阵绞痛","排气后缓解"],"care":"热敷腹部、保暖","otc":"颠茄片（短期解痉）","taboo":"青光眼患者禁用颠茄；不明腹痛直接吃止痛药掩盖病情","warn":"持续绞痛>6小时、按压剧痛、发热、便血→急腹症（阑尾炎/肠梗阻）立即急诊","quiz":[{"q":"阵发性绞痛先？","a":"布洛芬止痛（❌掩盖）","b":"热敷+颠茄观察（✅）","correct":"B"},{"q":"不明剧痛怎么办？","a":"加大止痛药（❌）","b":"急诊排查急腹症（✅）","correct":"B"},{"q":"颠茄谁不能吃？","a":"健康年轻人（❌）","b":"青光眼患者（✅禁用）","correct":"B"}]},{"title":"口臭（积食消化不良）","cat":"digest","symptoms":["晨起口气重","舌苔厚","腹胀不想吃"],"care":"清淡饮食+刷牙舌苔","otc":"复方氯己定含漱液（短期≤5天）；健胃消食片","taboo":"氯己定长期不间断含漱（染色、味觉改变）","warn":"口臭持续2周以上、牙龈红肿出血→优先口腔科排查蛀牙/牙周病","quiz":[{"q":"氯己定含漱液用多久？","a":"长期当漱口水（❌染色）","b":"短期≤5天（✅）","correct":"B"},{"q":"口臭首先？","a":"用网红口气清新剂遮（❌）","b":"口腔科洗牙+检查蛀牙（✅）","correct":"B"},{"q":"积食口臭吃？","a":"健胃消食片+清淡（✅）","b":"加量重口外卖（❌）","correct":"A"}]},{"title":"细菌性痢疾","cat":"digest","symptoms":["黏液脓血便","里急后重（拉完还想拉）","高烧","左下腹痛"],"care":"补液","otc":"口服补液盐Ⅲ；蒙脱石散（仅辅助）。无OTC抗生素！","taboo":"自行购买喹诺酮类（诺氟沙星等）抗生素","warn":"黏液脓血便→必须就医粪检+抗生素治疗，法定传染病要报告","quiz":[{"q":"脓血便发烧怎么办？","a":"自己买诺氟沙星（❌处方药）","b":"就医（✅）","correct":"B"},{"q":"首要措施？","a":"止泻药吃够量（❌）","b":"口服补液盐防脱水（✅）","correct":"B"},{"q":"菌痢属于？","a":"小问题（❌）","b":"法定传染病要规范就医（✅）","correct":"B"}]},{"title":"功能性胀气","cat":"digest","symptoms":["腹胀","肠鸣","放屁多","无剧痛"],"care":"走动揉腹、少喝气泡饮","otc":"二甲硅油片；乳酶生片","taboo":"只吃药不调整饮食；一直躺着不动","warn":"胀气伴随剧烈腹痛、停止排气排便、便血→就医（肠梗阻）","quiz":[{"q":"胀气首选？","a":"二甲硅油+少喝可乐（✅）","b":"加倍止痛药（❌）","correct":"A"},{"q":"胀气最关键？","a":"只吃药（❌）","b":"调整饮食+运动（✅）","correct":"B"},{"q":"停止排气+剧痛？","a":"揉肚子放屁（❌）","b":"急诊（✅肠梗阻风险）","correct":"B"}]},{"title":"急性肠胃炎（非细菌性）","cat":"digest","symptoms":["恶心呕吐","水样腹泻","阵发性腹痛","轻微低烧"],"care":"禁食6h后清淡流质","otc":"口服补液盐Ⅲ（核心）；蒙脱石散；铝碳酸镁（胃痛）","taboo":"立即强行吃很多食物；自己用抗生素","warn":"呕吐物带血、高烧≥38.5、脱水、脓血便→就医","quiz":[{"q":"肠胃炎最关键？","a":"抗生素（❌）","b":"补液盐防脱水（✅）","correct":"B"},{"q":"呕吐后怎么办？","a":"马上补顿大餐（❌）","b":"少量多次淡盐水+逐步流质（✅）","correct":"B"},{"q":"呕吐血/高烧？","a":"加大止吐药（❌）","b":"就医（✅）","correct":"B"}]},{"title":"胃胀气嗳气","cat":"digest","symptoms":["餐后上腹胀","不停打饱嗝","嗳气后稍缓解"],"care":"细嚼慢咽、少嚼口香糖","otc":"二甲硅油片；健胃消食片","taboo":"暴饮暴食后又喝汽水；一边吃饭一边说话吞气","warn":"长期嗳气伴吞咽困难、体重下降→就医胃镜","quiz":[{"q":"打饱嗝多怎么缓解？","a":"喝汽水帮它排（❌）","b":"二甲硅油+细嚼慢咽（✅）","correct":"B"},{"q":"嗳气伴随什么要就医？","a":"精神差体重降吞咽困难（✅）","b":"餐后偶尔打1次（❌）","correct":"A"},{"q":"吃饭时？","a":"边刷剧边大口吞（❌）","b":"专心细嚼慢咽（✅）","correct":"B"}]},{"title":"肛周炎轻度","cat":"digest","symptoms":["肛周发红","瘙痒","灼痛"],"care":"温水坐浴、保持干燥、软厕纸","otc":"红霉素软膏（细菌型）；莫匹罗星软膏（细菌感染）","taboo":"地奈德激素膏乱涂（感染加重）；用热水烫洗止痒","warn":"肛周肿块剧痛、流脓、发烧→肛周脓肿，必须急诊手术","quiz":[{"q":"轻度肛周炎外涂？","a":"地奈德止痒就行（❌）","b":"莫匹罗星+保持干燥（✅）","correct":"B"},{"q":"肛周剧痛肿包发烧？","a":"再忍忍（❌）","b":"急诊（✅脓肿）","correct":"B"},{"q":"护理怎么做？","a":"热水烫洗（❌）","b":"温水坐浴（✅）","correct":"B"}]},{"title":"饮酒后胃部不适","cat":"digest","symptoms":["上腹部灼热痛","恶心呕吐","反酸"],"care":"喝温水/淡糖水、流食","otc":"铝碳酸镁咀嚼片（护胃中和）","taboo":"服用头孢/甲硝唑（双硫仑反应致命）；再喝\"解酒\"；布洛芬空腹","warn":"呕吐咖啡渣样物/鲜血、黑便→上消化道出血，立刻急诊","quiz":[{"q":"饮酒后胃痛能吃头孢吗？","a":"感冒顺便吃（❌致命）","b":"绝对禁用7天内（✅）","correct":"B"},{"q":"饮酒后呕吐鲜血？","a":"休息观察（❌）","b":"急诊（✅出血）","correct":"B"},{"q":"护胃选？","a":"铝碳酸镁（✅）","b":"头孢（❌）","correct":"A"}]},{"title":"海鲜轻微食物不耐受腹泻","cat":"digest","symptoms":["进食海鲜后数小时水样腹泻","轻微腹痛"],"care":"补液+清淡","otc":"口服补液盐Ⅲ；蒙脱石散；氯雷他定（过敏皮疹时）","taboo":"自行吃抗生素；再次吃海鲜刺激","warn":"全身皮疹、喉咙紧、呼吸困难→海鲜过敏休克，立刻急诊；脓血便高烧→就医","quiz":[{"q":"轻微海鲜腹泻首选？","a":"抗生素（❌）","b":"补液盐+蒙脱石（✅）","correct":"B"},{"q":"皮疹+喉咙紧？","a":"继续吃氯雷他定（❌）","b":"立即急诊（✅过敏休克）","correct":"B"},{"q":"海鲜腹泻期间？","a":"再吃一顿海鲜（❌）","b":"清淡流质饮食（✅）","correct":"B"}]},{"title":"熬夜上火口舌不适","cat":"digest","symptoms":["口干","舌尖红","舌面小溃疡","咽痛"],"care":"早睡、饮水、维B","otc":"复合维生素B；西瓜霜喷剂；复方氯己定含漱液","taboo":"继续通宵+辣条；喝奶茶代替水","warn":"同一位置溃疡超2周不愈→就医（排查恶变）","quiz":[{"q":"熬夜口舌不适首选？","a":"补觉+复合B+西瓜霜（✅）","b":"再来顿烧烤（❌）","correct":"A"},{"q":"溃疡多久未愈要就医？","a":"2周不愈合（✅）","b":"1天（❌）","correct":"A"},{"q":"平时预防？","a":"通宵+奶茶（❌）","b":"规律作息+饮水（✅）","correct":"B"}]},{"title":"尿路感染","cat":"women","symptoms":["尿频尿急尿痛","下腹胀","偶尔血尿"],"care":"大量饮水、勤排尿","otc":"无OTC抗菌药物！疼痛难忍用布洛芬临时","taboo":"自行乱吃抗生素、憋尿不喝水","warn":"尿痛+腰痛+发烧≥38℃→急性肾盂肾炎，必须急诊抗生素输液","quiz":[{"q":"尿路感染能吃什么？","a":"自己买左氧氟沙星（❌处方药）","b":"大量饮水+就医尿检（✅）","correct":"B"},{"q":"什么情况急诊？","a":"仅尿痛（❌）","b":"尿痛+腰痛发烧（✅肾盂肾炎）","correct":"B"},{"q":"预防最重要？","a":"少喝水+憋尿（❌）","b":"勤排尿+多喝水（✅）","correct":"B"}]},{"title":"精神性尿频（紧张焦虑）","cat":"women","symptoms":["情绪紧张时尿频","无尿痛","尿量少"],"care":"深呼吸、放松训练","otc":"无对症OTC，情绪调节为主","taboo":"没确诊感染就自行吃消炎药（抗生素）","warn":"伴随尿痛、血尿、发烧→立即就医（已感染）","quiz":[{"q":"考试前尿频但不痛？","a":"先吃消炎药预防（❌）","b":"深呼吸放松（✅）","correct":"B"},{"q":"什么情况需要就医？","a":"尿频+尿痛血尿发烧（✅）","b":"仅考前（❌）","correct":"A"},{"q":"尿频正确做法？","a":"不敢喝水憋尿（❌）","b":"正常饮水+专注考试（✅）","correct":"B"}]},{"title":"原发性痛经","cat":"women","symptoms":["经期第1-2天下腹绞痛","腰酸","面色苍白冷汗"],"care":"热敷、休息、保暖","otc":"布洛芬；对乙酰氨基酚（饭后服用，二选一）","taboo":"胃溃疡人群慎用布洛芬；空腹服药；自行吃避孕药调经","warn":"疼痛逐年加重、量大血块多、发烧→就医排查子宫内膜异位症/盆腔炎","quiz":[{"q":"痛经什么时候吃布洛芬？","a":"空腹立刻（❌胃刺激）","b":"饭后服用（✅）","correct":"B"},{"q":"痛经逐年加重？","a":"正常现象（❌）","b":"就医排查内异症（✅）","correct":"B"},{"q":"痛经护理？","a":"冰饮吹空调（❌）","b":"热敷保暖（✅）","correct":"B"}]},{"title":"经前期综合征PMS","cat":"women","symptoms":["情绪低落易怒","乳房胀痛","下肢水肿","长痘"],"care":"运动、少盐、睡眠","otc":"维生素B6；疼痛明显短期布洛芬","taboo":"长期不间断吃止痛药；过度节食减重","warn":"乳房持续剧痛硬块、严重抑郁自残念头→就医","quiz":[{"q":"PMS乳房痛首选？","a":"长期吃止痛药（❌）","b":"维生素B6+必要时短期布洛芬（✅）","correct":"B"},{"q":"乳房持续硬块剧痛？","a":"正常PMS（❌）","b":"就医乳腺检查（✅）","correct":"B"},{"q":"经前饮食？","a":"高盐火锅宵夜（❌）","b":"少盐少饮（✅）","correct":"B"}]},{"title":"女性外阴阴道炎症","cat":"women","symptoms":["白带发黄豆腐渣/有异味","外阴瘙痒灼痛"],"care":"干燥透气、纯棉","otc":"无OTC抗菌特效药！克霉唑栓（部分OTC，需药师评估，但就医优先）","taboo":"频繁冲洗阴道内部（破坏菌群）；网购网红私处洗护液；自行吃抗生素","warn":"症状持续/加重→妇科就诊白带常规，明确类型再用药，乱用药加重紊乱","quiz":[{"q":"私处瘙痒先？","a":"冲洗+网红洗液（❌加重）","b":"妇科查白带常规（✅）","correct":"B"},{"q":"能冲洗阴道内部吗？","a":"清洁（❌菌群破坏）","b":"绝对不能（✅）","correct":"B"},{"q":"平时穿什么？","a":"紧身牛仔+蕾丝化纤（❌）","b":"纯棉透气宽松（✅）","correct":"B"}]},{"title":"复发性口腔溃疡","cat":"sense","symptoms":["口腔黏膜圆形溃烂","黄白假膜","剧痛"],"care":"软食、口腔卫生","otc":"西瓜霜喷剂、口腔溃疡散、复方氯己定含漱液、重组人表皮生长因子凝胶","taboo":"撒盐、白酒擦拭创面（加重）；长期用激素贴","warn":"同一位置>2周不愈、硬结、面积大→就医（排除口腔癌）","quiz":[{"q":"口腔溃疡怎么处理？","a":"撒盐白酒（❌）","b":"西瓜霜喷剂+软食（✅）","correct":"B"},{"q":"多久不愈要就医？","a":"2周不愈（✅）","b":"2天（❌）","correct":"A"},{"q":"预防复发性口腔溃疡？","a":"继续熬夜（❌）","b":"规律作息+复合B（✅）","correct":"B"}]},{"title":"口角炎","cat":"sense","symptoms":["口角皲裂","糜烂","结痂","张口痛"],"care":"不要舔、保持干燥","otc":"复合维生素B；红霉素软膏（仅细菌型外用）","taboo":"真菌型口角炎误用红霉素；舌头反复舔口角","warn":"双侧口角糜烂长期不愈、伴其他部位皮疹→就医","quiz":[{"q":"口角炎缺什么维生素？","a":"维C（❌）","b":"B族维生素（✅）","correct":"B"},{"q":"舔口角会？","a":"好得快（❌加重）","b":"越舔越裂（✅）","correct":"B"},{"q":"口角炎外用？","a":"先分清细菌/真菌，细菌才用红霉素（✅）","b":"什么类型都用红霉素（❌）","correct":"A"}]},{"title":"牙本质敏感","cat":"sense","symptoms":["冷/热/酸/甜一过性刺痛"],"care":"软毛牙刷、巴氏刷牙法","otc":"抗敏感牙膏（长期使用）","taboo":"依靠抗敏牙膏治疗牙髓炎；继续横刷","warn":"自发痛、夜间痛、热痛冷缓解→牙髓炎，必须口腔科根管治疗","quiz":[{"q":"牙酸首选？","a":"抗敏感牙膏+纠正刷牙法（✅）","b":"不管它（❌）","correct":"A"},{"q":"什么情况必须口腔科？","a":"冷热一过性痛（❌）","b":"自发痛夜间痛（✅牙髓炎）","correct":"B"},{"q":"正确刷牙？","a":"横着刷（❌楔缺）","b":"巴氏刷牙法（✅）","correct":"B"}]},{"title":"智齿冠周炎","cat":"sense","symptoms":["智齿周围牙龈肿痛","张口困难","口臭","脸颊肿"],"care":"温盐水漱口","otc":"复方氯己定含漱液；布洛芬（止痛）","taboo":"自行服用抗生素；用牙签戳挑","warn":"牙龈肿痛伴发烧、张口受限、面部肿胀→间隙感染，急诊！","quiz":[{"q":"智齿痛能做什么？","a":"自己买头孢+甲硝唑（❌）","b":"氯己定含漱+就医拍片（✅）","correct":"B"},{"q":"什么情况紧急？","a":"痛1天（❌）","b":"张口受限+高烧脸肿（✅感染扩散）","correct":"B"},{"q":"智齿反复发炎怎么处理？","a":"每次自己扛（❌）","b":"炎症消退后口腔科拔除（✅）","correct":"B"}]},{"title":"夜磨牙","cat":"mind","symptoms":["睡眠中磨牙齿","晨起颞下颌关节酸痛","牙磨耗敏感"],"care":"放松、睡前不剧烈","otc":"无OTC特效药","taboo":"单纯吃止痛药/安眠药应付了事","warn":"长期磨牙→牙磨损/颞下颌关节紊乱，建议口腔科定制磨牙垫","quiz":[{"q":"夜磨牙首选？","a":"网购安眠药（❌违法）","b":"口腔科做磨牙垫（✅）","correct":"B"},{"q":"长期磨牙不治？","a":"没关系（❌）","b":"牙齿磨损+关节病（✅危害）","correct":"B"},{"q":"睡前准备？","a":"熬夜刷题+打游戏（❌）","b":"放松减压（✅）","correct":"B"}]},{"title":"干眼症、视疲劳","cat":"sense","symptoms":["眼干","异物感","视物模糊","眼疲劳","血丝"],"care":"20-20-20法则、热敷","otc":"无防腐剂玻璃酸钠人工泪液","taboo":"长期频繁用网红去红血丝眼药水（血管收缩依赖）；滥用抗生素滴眼液","warn":"眼痛、畏光、视力下降、大量分泌物→眼科就诊（角膜炎/青光眼）","quiz":[{"q":"干眼点什么？","a":"网红去红血丝眼药水（❌）","b":"无防腐剂人工泪液（✅）","correct":"B"},{"q":"视力下降眼痛？","a":"继续看屏幕（❌）","b":"眼科就诊（✅）","correct":"B"},{"q":"20-20-20是？","a":"每20分钟看20英尺远20秒（✅）","b":"无意义（❌）","correct":"A"}]},{"title":"外耳道湿疹","cat":"sense","symptoms":["耳廓/耳道入口痒","流黄水","结痂"],"care":"保持干燥、不掏耳","otc":"炉甘石洗剂（无破溃）；地奈德乳膏薄涂耳外侧（≤7天）","taboo":"药膏挤入耳道深处；棉签深入挖耳；酒精滴耳","warn":"耳内流脓、剧痛、发烧、听力下降→急性中耳炎/外耳道炎，耳鼻喉急诊","quiz":[{"q":"外耳道湿疹涂药膏？","a":"挤入耳道深处（❌）","b":"薄涂耳外侧入口处（✅）","correct":"B"},{"q":"流脓剧痛发烧？","a":"加大药膏（❌）","b":"耳鼻喉急诊（✅）","correct":"B"},{"q":"平时掏耳朵？","a":"棉签深挖（❌损伤）","b":"不掏，耵聍自行排出（✅）","correct":"B"}]},{"title":"慢性咽炎","cat":"resp","symptoms":["咽部异物感\"有痰卡着\"","清嗓","干痒"],"care":"温水、少说话","otc":"西地碘含片；复方氯己定含漱液（短期）","taboo":"长期不间断含服润喉药（口腔菌群紊乱）；继续吃火锅喝冰啤","warn":"异物感超1个月不愈、吞咽困难、颈部肿块→耳鼻喉排查咽喉肿瘤","quiz":[{"q":"慢性咽炎首选？","a":"西地碘含片+护嗓（✅）","b":"抗生素连吃1个月（❌）","correct":"A"},{"q":"异物感超1个月？","a":"正常咽炎（❌）","b":"耳鼻喉排查（✅）","correct":"B"},{"q":"饮食？","a":"麻辣火锅冰啤（❌）","b":"温水清淡（✅）","correct":"B"}]},{"title":"晕动病（晕车）","cat":"sense","symptoms":["恶心","呕吐","出冷汗","头晕","面色苍白"],"care":"靠窗边看远物","otc":"茶苯海明片（出发前30分钟服用）","taboo":"上车后才吃药；服药后骑车/开车/精细操作","warn":"服药后嗜睡，不要独自过马路、骑车","quiz":[{"q":"茶苯海明什么时候吃？","a":"上车呕吐后（❌太迟）","b":"出发前30分钟（✅）","correct":"B"},{"q":"服药后能骑车吗？","a":"能（❌嗜睡危险）","b":"不能（✅）","correct":"B"},{"q":"晕车时看什么？","a":"看近处手机屏幕（❌加重）","b":"看窗外远处物体（✅）","correct":"B"}]},{"title":"鼻衄（流鼻血）","cat":"resp","symptoms":["单侧鼻腔出血","量少反复"],"care":"前倾按压鼻翼","otc":"复方薄荷脑滴鼻液（平时滋润）；出血时物理止血为主","taboo":"仰头止血（血液倒流气道/呕吐）；抬高手臂（无效）","warn":"持续按压20分钟仍不止血、双侧大出血、贫血头晕→急诊止血；反复出血查血小板","quiz":[{"q":"流鼻血正确姿势？","a":"仰头（❌）","b":"身体前倾+捏鼻翼10-15分钟（✅）","correct":"B"},{"q":"止血困难怎么办？","a":"继续仰头（❌）","b":"急诊（✅）","correct":"B"},{"q":"平时预防干燥出血？","a":"抠鼻清理（❌）","b":"薄荷脑滴鼻液滋润（✅）","correct":"B"}]},{"title":"睑缘炎","cat":"sense","symptoms":["眼睑边缘红肿","鳞屑","掉睫毛","眼痒异物感"],"care":"棉签温水清洁睑缘","otc":"生理盐水清洁睑缘；无防腐剂玻璃酸钠人工泪液","taboo":"自行滴用抗生素滴眼液（处方药）；带妆睡觉","warn":"睫毛大量脱落、眼睑结痂化脓、影响视力→眼科就诊","quiz":[{"q":"睑缘炎怎么清洁？","a":"手搓眼睛（❌）","b":"无菌棉签蘸温水擦睑缘（✅）","correct":"B"},{"q":"能用抗生素滴眼液？","a":"眼红就滴（❌）","b":"处方药需医生开（✅）","correct":"B"},{"q":"眼妆注意？","a":"带妆睡觉省时间（❌）","b":"彻底卸妆（✅）","correct":"B"}]},{"title":"隐形眼镜相关结膜刺激","cat":"sense","symptoms":["眼红","异物感","流泪","视物模糊"],"care":"立刻停戴","otc":"无防腐剂玻璃酸钠人工泪液","taboo":"不适继续硬戴；自行点抗生素滴眼液；网红去红血丝眼药水","warn":"眼痛剧烈、畏光、视力骤降→角膜溃疡/感染，立即眼科急诊！","quiz":[{"q":"戴隐形眼痛眼红怎么办？","a":"继续戴到下课（❌）","b":"立即停戴+眼科（✅）","correct":"B"},{"q":"隐形能游泳戴吗？","a":"能（❌感染风险）","b":"绝对不能（✅）","correct":"B"},{"q":"能戴隐形睡觉吗？","a":"午休短时间可以（❌）","b":"任何睡眠都禁止（✅）","correct":"B"}]},{"title":"过敏性结膜炎","cat":"sense","symptoms":["双眼剧烈痒","眼红","流泪","拉丝样分泌物"],"care":"冷敷、洗眼","otc":"奥洛他定滴眼液（OTC抗过敏眼药）；氯雷他定口服","taboo":"自己点抗生素滴眼液；地塞米松类激素眼液（处方药）","warn":"眼痛、畏光、视力下降→眼科","quiz":[{"q":"双眼奇痒发红？","a":"抗生素滴眼液（❌）","b":"奥洛他定抗过敏（✅）","correct":"B"},{"q":"什么情况立刻眼科？","a":"眼痒流泪（❌）","b":"眼痛视力下降（✅）","correct":"B"},{"q":"接触花粉后？","a":"继续揉眼（❌）","b":"冷毛巾敷眼+洗眼（✅）","correct":"B"}]},{"title":"口角单纯疱疹","cat":"sense","symptoms":["口角/唇缘簇集性小水疱","灼热痛"],"care":"保持干燥不抓","otc":"阿昔洛韦乳膏（OTC外用抗病毒，越早越好）","taboo":"挑破水疱；红霉素软膏（对病毒无效）；激素膏","warn":"眼部周围疱疹、全身发热、疱疹扩散→皮肤科就诊","quiz":[{"q":"口唇疱疹用什么？","a":"阿昔洛韦乳膏（✅抗病毒）","b":"地奈德（❌加重）","correct":"A"},{"q":"水疱能挑破吗？","a":"能（❌感染）","b":"不能，自然结痂（✅）","correct":"B"},{"q":"眼周长疱疹怎么办？","a":"涂口唇药膏（❌）","b":"眼科+皮肤科急诊（✅）","correct":"B"}]},{"title":"游泳后外耳道轻微刺激","cat":"sense","symptoms":["耳朵进水后痒","闷胀感"],"care":"头侧跳控干、吹风机冷风低档吹","otc":"无特殊OTC，干燥为主","taboo":"棉签深挖；酒精双氧水滴耳刺激","warn":"24-48小时不缓解、疼痛流脓、听力下降→耳鼻喉（外耳道炎/中耳炎）","quiz":[{"q":"游泳进水怎么处理？","a":"棉签挖挖（❌）","b":"侧头单脚跳控水（✅）","correct":"B"},{"q":"耳痛流脓怎么办？","a":"滴酒精（❌）","b":"耳鼻喉就诊（✅）","correct":"B"},{"q":"多久不缓解就医？","a":"3天（❌）","b":"1-2天不缓解（✅）","correct":"B"}]},{"title":"轻度痤疮","cat":"skin","symptoms":["额头面部粉刺","红色丘疹","小脓疱"],"care":"温和洁面、少挤","otc":"阿达帕林凝胶（晚间薄涂避光，建立耐受）；过氧化苯甲酰凝胶","taboo":"网购不明\"速效祛痘\"激素药膏；阿达帕林孕妇/备孕期禁用；叠加多种酸","warn":"重度囊肿结节、留疤、面中部危险三角挤压→皮肤科规范治疗","quiz":[{"q":"轻度痤疮首选？","a":"网红激素祛痘膏（❌）","b":"阿达帕林晚间薄涂（✅）","correct":"B"},{"q":"面中部危险三角痘？","a":"挤压排脓（❌颅内感染）","b":"绝对禁止挤压（✅）","correct":"B"},{"q":"饮食注意？","a":"奶茶蛋糕（❌）","b":"少糖少奶（✅）","correct":"B"}]},{"title":"湿疹、虫咬皮炎、荨麻疹","cat":"skin","symptoms":["湿疹红斑渗出痒"],"care":"不抓冷敷","otc":"口服氯雷他定/西替利嗪；外用炉甘石洗剂（无破溃）；地奈德乳膏（≤1-2周，面部慎）","taboo":"激素药膏长期大面积涂；皮肤破溃处用炉甘石；热水烫洗止痒","warn":"荨麻疹面部口唇肿胀、喉咙紧→过敏性休克前兆，立即急诊！","quiz":[{"q":"皮肤破溃能用炉甘石吗？","a":"能（❌）","b":"不能（✅感染）","correct":"B"},{"q":"喉咙紧脸肿？","a":"加大抗组胺药（❌）","b":"急诊（✅过敏性休克）","correct":"B"},{"q":"止痒首选？","a":"热水烫（❌）","b":"冷敷+地奈德薄涂（✅）","correct":"B"}]},{"title":"足癣（脚气）","cat":"skin","symptoms":["脚趾缝脱皮痒","水疱","糜烂","脚臭"],"care":"干燥透气换袜","otc":"特比萘芬乳膏；联苯苄唑乳膏（坚持用够疗程4周）","taboo":"单用激素药膏（地奈德等）止痒→真菌扩散加重","warn":"不痒了也要继续用1-2周巩固！防复发","quiz":[{"q":"脚气涂什么？","a":"激素膏止痒（❌扩散）","b":"特比萘芬抗真菌（✅）","correct":"B"},{"q":"不痒了就停药？","a":"可以（❌复发）","b":"继续用1-2周巩固（✅）","correct":"B"},{"q":"预防脚气？","a":"共用宿舍拖鞋（❌）","b":"拖鞋专人专用（✅）","correct":"B"}]},{"title":"汗疱疹","cat":"skin","symptoms":["手掌/手指侧面密集小水疱","剧痒"],"care":"少碰水+洗涤剂","otc":"炉甘石洗剂（止痒）；尿素维E乳膏（脱屑期）；瘙痒重氯雷他定","taboo":"醋/盐水泡手；挑破水疱；长期激素膏","warn":"水疱破溃流脓发烧→继发细菌感染就医","quiz":[{"q":"汗疱疹怎么处理？","a":"盐水泡（❌）","b":"炉甘石止痒+少碰洗洁精（✅）","correct":"B"},{"q":"水疱能挑破吗？","a":"能（❌感染）","b":"不能（✅）","correct":"B"},{"q":"流脓发烧？","a":"加大激素（❌）","b":"就医（✅感染）","correct":"B"}]},{"title":"轻度晒伤","cat":"skin","symptoms":["皮肤发红","灼热痛","无水泡"],"care":"凉水冲洗、冷敷","otc":"炉甘石洗剂；维生素E乳；疼痛明显口服布洛芬","taboo":"水泡破溃后自行涂不明药膏；继续晒","warn":"起大水泡破溃、发烧寒颤、大面积晒伤→就医（二度晒伤）","quiz":[{"q":"晒伤发红首选？","a":"牙膏酱油（❌）","b":"冷敷+炉甘石（✅）","correct":"B"},{"q":"大水泡怎么处理？","a":"自己挑破（❌）","b":"就医无菌处理（✅）","correct":"B"},{"q":"平时预防？","a":"正午出门不防晒（❌）","b":"SPF50+PA++++防晒霜（✅）","correct":"B"}]},{"title":"接触性皮炎","cat":"skin","symptoms":["接触物边界清楚的红斑","丘疹","剧痒"],"care":"立即脱离过敏原","otc":"氯雷他定/西替利嗪；炉甘石洗剂；地奈德短期薄涂","taboo":"继续用可疑过敏原；长期用激素","warn":"渗液多、化脓、发热→就医感染；面部眼周慎用激素","quiz":[{"q":"新买护肤品过敏先？","a":"坚持用完（❌）","b":"立即停用+脱离（✅）","correct":"B"},{"q":"面部过敏涂什么？","a":"强效激素膏（❌）","b":"短程弱效激素+皮肤科（✅）","correct":"B"},{"q":"接触性皮炎第一原则？","a":"脱离过敏原（✅）","b":"涂药膏忍（❌）","correct":"A"}]},{"title":"体癣、股癣","cat":"skin","symptoms":["体/股部环形红斑","边界清楚","边缘丘疹","中央消退","痒"],"care":"干燥透气换衣","otc":"特比萘芬乳膏；联苯苄唑乳膏（用够2-4周）","taboo":"单独用地奈德等激素药膏→癣加重扩散","warn":"皮损消退后继续用药1-2周防复发！","quiz":[{"q":"股癣首选？","a":"地奈德止痒（❌扩散）","b":"特比萘芬用够疗程（✅）","correct":"B"},{"q":"消退后就停药？","a":"省药（❌复发）","b":"续用1-2周（✅）","correct":"B"},{"q":"预防股癣？","a":"健身房坐垫直接坐（❌）","b":"垫毛巾+勤换内裤（✅）","correct":"B"}]},{"title":"冻疮","cat":"skin","symptoms":["手脚耳廓红肿","痒","遇热加重","结节"],"care":"保暖、温和复温","otc":"维生素E乳膏；冻疮膏","taboo":"开水烫泡、用力揉搓红肿部位（组织坏死）","warn":"水疱破溃、发黑坏死、剧痛→就医","quiz":[{"q":"冻疮怎么处理？","a":"开水烫泡（❌）","b":"温和复温+维E膏（✅）","correct":"B"},{"q":"预防冻疮核心？","a":"穿少耍帅（❌）","b":"保暖（✅）","correct":"B"},{"q":"皮肤发黑破溃？","a":"再观察（❌）","b":"就医（✅）","correct":"B"}]},{"title":"毛囊炎","cat":"skin","symptoms":["毛发根部红色脓疱","触痛"],"care":"清洁透气","otc":"细菌性→莫匹罗星软膏；真菌性→酮康唑洗剂","taboo":"挤压（面部危险三角可致命颅内感染）；激素膏","warn":"大面积多发、伴随发烧、红肿扩散→就医","quiz":[{"q":"毛囊炎脓疱能挤吗？","a":"挤掉好得快（❌）","b":"莫匹罗星外涂（✅）","correct":"B"},{"q":"危险三角区挤痘？","a":"没事（❌颅内感染）","b":"绝对禁止（✅）","correct":"B"},{"q":"大面积发烧？","a":"加涂药膏（❌）","b":"就医口服抗生素（✅）","correct":"B"}]},{"title":"唇炎","cat":"skin","symptoms":["唇部干燥脱屑","皲裂","红肿痒"],"care":"停刺激物、温和润唇","otc":"维生素E乳膏；地奈德乳膏薄涂唇周（≤7天，勿入口）","taboo":"反复舔嘴唇；乱用网红润唇膏口红；入口涂激素膏","warn":"持续2周不愈、糜烂结痂增厚→皮肤科排查接触性唇炎","quiz":[{"q":"唇炎舔嘴唇？","a":"临时湿润（❌越舔越裂）","b":"禁止+维E膏（✅）","correct":"B"},{"q":"2周不愈怎么办？","a":"换更多口红（❌）","b":"皮肤科就诊（✅）","correct":"B"},{"q":"激素膏涂哪里？","a":"直接涂嘴唇入口（❌）","b":"唇周薄涂（✅）","correct":"B"}]},{"title":"隐翅虫皮炎","cat":"skin","symptoms":["拍死后毒液接触皮肤→条索状红斑","脓疱","灼痛"],"care":"清水冲","otc":"清水冲洗残留毒液；炉甘石洗剂；瘙痒重氯雷他定","taboo":"手直接拍虫子（致命操作）；牙膏盐水敷创面","warn":"大面积脓疱、剧痛发热→就医","quiz":[{"q":"隐翅虫飞到皮肤上？","a":"直接拍死（❌毒液伤皮肤）","b":"轻轻吹走（✅）","correct":"B"},{"q":"得了皮炎先？","a":"牙膏敷（❌）","b":"大量清水冲+炉甘石（✅）","correct":"B"},{"q":"大面积脓疱发烧？","a":"继续自治（❌）","b":"就医（✅）","correct":"B"}]},{"title":"蜂蜇伤","cat":"skin","symptoms":["被蜇处红肿剧痛","瘙痒"],"care":"挑出毒刺（不挤）","otc":"炉甘石洗剂；过敏口服氯雷他定","taboo":"挤压毒囊（注入更多毒液）；尿液/酱油/牙膏涂","warn":"喉咙发紧、呼吸困难、全身风团、头晕→过敏性休克，急诊！","quiz":[{"q":"蜂蜇毒刺怎么取出？","a":"挤压毒囊（❌）","b":"用卡片刮出（✅）","correct":"B"},{"q":"呼吸困难喉咙紧？","a":"忍忍（❌）","b":"120急诊（✅）","correct":"B"},{"q":"伤口涂什么？","a":"尿液（❌）","b":"炉甘石+冷敷（✅）","correct":"B"}]},{"title":"蜱虫叮咬","cat":"skin","symptoms":["蜱虫吸附皮肤吸血","局部红肿硬结"],"care":"完整取出","otc":"无OTC处理药膏！物理取出优先","taboo":"硬拽（口器残留）、烟头烫、酒精闷（刺激蜱吐毒液）","warn":"交由医生完整取出！叮咬后1个月内发热皮疹→立即就医（莱姆病）","quiz":[{"q":"蜱虫叮咬怎么办？","a":"硬拽烫死（❌）","b":"交医生完整取出（✅）","correct":"B"},{"q":"叮咬后发热皮疹？","a":"没事（❌莱姆病）","b":"立即就医（✅）","correct":"B"},{"q":"野外预防？","a":"坐草地上（❌）","b":"长衣长裤+驱虫剂（✅）","correct":"B"}]},{"title":"汗疹（痱子）","cat":"skin","symptoms":["颈胸背密集小红丘疹","刺痒"],"care":"降温干燥","otc":"炉甘石洗剂（止痒）；痱子粉（无破溃时）","taboo":"破溃处撒痱子粉（颗粒刺激）；涂抹厚重油性膏","warn":"脓疱密集+发烧→就医（脓痱继发感染）","quiz":[{"q":"痱子破溃处？","a":"撒痱子粉（❌刺激）","b":"保持干燥就医（✅）","correct":"B"},{"q":"预防痱子？","a":"厚涂防晒霜不透气（❌）","b":"透气衣物+降温（✅）","correct":"B"},{"q":"瘙痒首选？","a":"抓挠（❌）","b":"炉甘石（✅）","correct":"B"}]},{"title":"日光性皮炎","cat":"skin","symptoms":["暴晒后数小时暴露部位红斑","肿胀","水疱","灼痛"],"care":"冷敷","otc":"炉甘石洗剂；疼痛布洛芬；氯雷他定（瘙痒）","taboo":"继续暴晒；挤破水疱；不明偏方","warn":"大面积水疱、发烧寒颤、头面颈部严重肿胀→就医","quiz":[{"q":"日晒伤发红？","a":"冰敷+炉甘石（✅）","b":"再晒一层修复（❌）","correct":"A"},{"q":"预防首选？","a":"硬防晒+SPF50防晒霜（✅）","b":"晒后修复（❌）","correct":"A"},{"q":"大面积水疱？","a":"自己挑破（❌）","b":"就医（✅）","correct":"B"}]},{"title":"虫咬丘疹（多处蚊虫叮咬）","cat":"skin","symptoms":["四肢/暴露部位散在红色丘疹","剧烈瘙痒"],"care":"防抓","otc":"炉甘石洗剂；氯雷他定；地奈德薄涂","taboo":"热水烫洗；抓破感染","warn":"叮咬后迅速全身风团、喉咙紧→过敏反应急诊","quiz":[{"q":"虫咬后止痒？","a":"热水烫（❌）","b":"炉甘石+氯雷他定（✅）","correct":"B"},{"q":"叮咬后全身风团？","a":"观察（❌）","b":"急诊（✅）","correct":"B"},{"q":"宿舍预防？","a":"不挂蚊帐（❌）","b":"蚊帐+驱蚊（✅）","correct":"B"}]},{"title":"脂溢性皮炎（头皮）","cat":"skin","symptoms":["头皮油腻","大片黄屑","瘙痒","红斑"],"care":"规律作息","otc":"酮康唑洗剂（采乐）；二硫化硒洗剂（每周2次）","taboo":"用指甲抓挠头皮；天天洗头去屑","warn":"脱发加重、头皮流脓结痂→皮肤科","quiz":[{"q":"头皮脂溢性皮炎用？","a":"酮康唑洗剂每周2次（✅）","b":"激素药膏天天涂（❌）","correct":"A"},{"q":"头皮屑多？","a":"指甲抓挠（❌）","b":"指腹按摩（✅）","correct":"B"},{"q":"预防？","a":"熬夜+重油饮食（❌）","b":"规律作息（✅）","correct":"B"}]},{"title":"口角干裂非炎症","cat":"skin","symptoms":["口角干燥皲裂","无糜烂脓疱","唇整体干"],"care":"多喝水+润唇膏","otc":"维生素E乳膏；凡士林润唇膏","taboo":"舌头反复舔；撕掉死皮","warn":"裂口化脓出血、经久不愈→就医","quiz":[{"q":"口角干燥？","a":"舔舐（❌）","b":"凡士林润唇+多饮水（✅）","correct":"B"},{"q":"起皮怎么办？","a":"手撕掉（❌出血）","b":"温水湿敷+润唇（✅）","correct":"B"},{"q":"裂口化脓？","a":"继续忍（❌）","b":"就医（✅）","correct":"B"}]},{"title":"久坐痤疮（胸背）","cat":"skin","symptoms":["胸背上部红色丘疹","脓疱","痘痕"],"care":"透气、勤换衣","otc":"过氧化苯甲酰凝胶；酮康唑洗剂（胸背浴洗）","taboo":"长期激素膏；挤胸背痘","warn":"囊肿结节、成片疼痛→皮肤科","quiz":[{"q":"胸背长痘？","a":"紧身衣久坐（❌）","b":"透气衣物+酮康唑洗浴（✅）","correct":"B"},{"q":"痘痘能挤吗？","a":"能（❌留疤）","b":"外用药为主（✅）","correct":"B"},{"q":"预防？","a":"出汗衣服穿3天（❌）","b":"勤换洗衣物（✅）","correct":"B"}]},{"title":"轻微软组织挫伤（无破皮）","cat":"sport","symptoms":["撞击局部疼痛","肿胀","青紫淤血"],"care":"48h内冷敷→48h后热敷","otc":"双氯芬酸二乙胺乳胶剂外涂（48h后）；对乙酰氨基酚止痛","taboo":"急性期揉搓、热敷、活血油按摩（加重出血）","warn":"撞击后功能障碍、剧烈压痛、不能走路→拍片排除骨折","quiz":[{"q":"48小时内急性期？","a":"热敷+揉搓（❌）","b":"冷敷制动（✅）","correct":"B"},{"q":"48小时后？","a":"热敷+双氯芬酸乳胶（✅）","b":"仍冷敷（❌）","correct":"A"},{"q":"不能走路剧痛？","a":"坚持走回宿舍（❌）","b":"就医拍片（✅骨折）","correct":"B"}]},{"title":"药物过敏轻症（皮疹瘙痒）","cat":"skin","symptoms":["服药后数小时到数天","全身散在红斑丘疹","瘙痒"],"care":"立即停药","otc":"氯雷他定；炉甘石洗剂；无特效药","taboo":"继续吃可疑药物；自行加量抗过敏药","warn":"面部口唇肿胀、呼吸困难、喉咙紧、发烧→重症药疹/过敏性休克，立刻急诊！","quiz":[{"q":"吃药后皮疹？","a":"继续服药观察（❌）","b":"立即停药+就医（✅）","correct":"B"},{"q":"口唇肿胀呼吸紧？","a":"加大抗组胺（❌）","b":"急诊（✅重症）","correct":"B"},{"q":"以后怎么办？","a":"同类药也可以吃（❌交叉过敏）","b":"记录药名，就医主动告知（✅）","correct":"B"}]},{"title":"颈肩肌肉酸痛","cat":"sport","symptoms":["颈肩僵硬酸痛","活动受限","无手麻"],"care":"拉伸、热敷","otc":"双氯芬酸二乙胺乳胶剂外涂；布洛芬/对乙酰氨基酚（短期）","taboo":"皮肤破损涂乳胶剂；只靠止痛药硬扛不休息","warn":"手麻、头晕、走路踩棉→颈椎病，就医","quiz":[{"q":"颈肩痛首选？","a":"继续久坐（❌）","b":"拉伸+双氯芬酸外涂（✅）","correct":"B"},{"q":"手麻头晕？","a":"正常酸痛（❌）","b":"就医（✅颈椎病）","correct":"B"},{"q":"预防？","a":"低头看手机4小时不动（❌）","b":"每30分钟活动（✅）","correct":"B"}]},{"title":"扭伤（48小时之后）","cat":"sport","symptoms":["脚踝肿胀淤血减轻","疼痛缓解"],"care":"抬高、轻度活动","otc":"双氯芬酸二乙胺乳胶剂外涂；疼痛明显口服布洛芬","taboo":"急性期揉搓热敷猛涂活血药膏","warn":"肿胀不消、关节变形、剧痛→复查拍片排除骨折/韧带断裂","quiz":[{"q":"扭伤48h后？","a":"活血乳胶+热敷（✅）","b":"继续冷敷（❌）","correct":"A"},{"q":"扭伤48h内？","a":"热敷揉搓（❌）","b":"冷敷制动（✅）","correct":"B"},{"q":"变形剧痛？","a":"揉一揉（❌）","b":"拍片（✅骨折/韧带）","correct":"B"}]},{"title":"小腿抽筋","cat":"sport","symptoms":["夜间/运动后小腿肌肉突发强直痉挛剧痛"],"care":"反向拉伸","otc":"碳酸钙D3片；维生素D","taboo":"只补钙不找原因、受凉继续吹空调","warn":"频繁抽筋（每周≥2次）、单侧腿肿→就医排查血管/电解质","quiz":[{"q":"抽筋立即？","a":"扳脚反向拉伸（✅）","b":"大力捶打（❌）","correct":"A"},{"q":"饮食补充？","a":"奶茶熬夜（❌）","b":"牛奶+豆制品+维D（✅）","correct":"B"},{"q":"频繁抽筋+单侧腿肿？","a":"缺钙而已（❌）","b":"就医（✅血栓风险）","correct":"B"}]},{"title":"应力性骨损伤","cat":"sport","symptoms":["小腿/足部特定点压痛","运动后加重","休息减轻"],"care":"减运动量","otc":"疼痛明显短期外用双氯芬酸二乙胺乳胶剂","taboo":"服药后继续高强度训练","warn":"持续疼痛加重→就医核磁排查应力性骨折，完全制动","quiz":[{"q":"跑步小腿骨痛？","a":"加量训练突破（❌）","b":"减运动+休息观察（✅）","correct":"B"},{"q":"持续加重？","a":"吃止痛药继续（❌）","b":"就医（✅应力性骨折）","correct":"B"},{"q":"预防？","a":"突击增量（❌）","b":"循序渐进（✅）","correct":"B"}]},{"title":"扭伤急性期","cat":"sport","symptoms":["受伤即刻肿痛","淤血","不能负重"],"care":"RICE原则——Rest休息、Ice冰敷、Compression加压、Elevation抬高","otc":"布洛芬止痛；冷敷（非药物）","taboo":"热敷、揉搓按摩、贴活血膏药","warn":"无法行走、畸形、骨擦音→疑似骨折/脱位，急诊","quiz":[{"q":"刚崴脚先？","a":"揉搓热敷（❌）","b":"RICE原则（休息冰敷加压抬高）（✅）","correct":"B"},{"q":"能用活血贴？","a":"能（❌加重出血）","b":"48h内禁止（✅）","correct":"B"},{"q":"不能走路畸形？","a":"撑着走（❌）","b":"急诊X光（✅）","correct":"B"}]},{"title":"腰肌劳损","cat":"sport","symptoms":["腰部两侧肌肉酸痛","久坐久站加重","休息缓解"],"care":"硬板床、腰垫","otc":"双氯芬酸二乙胺乳胶剂外涂；布洛芬短期","taboo":"急性腰搬重物；靠止痛药硬扛","warn":"腰痛伴单侧腿放射痛麻木→腰椎间盘突出；腰痛伴发热→感染。均就医","quiz":[{"q":"腰肌劳损怎么坐？","a":"葛优瘫（❌）","b":"腰垫支撑+每30分钟站立（✅）","correct":"B"},{"q":"腿痛腿麻？","a":"肌肉劳损（❌）","b":"就医（✅椎间盘突出）","correct":"B"},{"q":"急性期怎么躺？","a":"软沙发（❌）","b":"硬板床（✅）","correct":"B"}]},{"title":"足底筋膜炎","cat":"sport","symptoms":["晨起下床第一步足跟剧痛","走几步缓解","久站又加重"],"care":"拉伸+足跟垫","otc":"双氯芬酸二乙胺乳胶剂；布洛芬","taboo":"平底软拖鞋继续跑","warn":"持续3个月不愈→就医（可能冲击波治疗）","quiz":[{"q":"足跟晨起痛？","a":"多跑多练（❌）","b":"足底筋膜拉伸+乳胶剂（✅）","correct":"B"},{"q":"穿什么鞋？","a":"拖鞋（❌）","b":"支撑运动鞋（✅）","correct":"B"},{"q":"3个月不愈？","a":"忍忍（❌）","b":"就医（✅）","correct":"B"}]},{"title":"肋软骨炎","cat":"sport","symptoms":["前胸某一点压痛","深呼吸咳嗽加重"],"care":"休息热敷","otc":"双氯芬酸二乙胺乳胶剂；布洛芬","taboo":"反复按压疼痛点；剧烈运动","warn":"胸闷、压榨痛、冷汗、左肩放射痛→心脏疾病！立即急诊！","quiz":[{"q":"胸口压痛+呼吸加重？","a":"肋软骨炎乳胶剂+休息（✅）","b":"心脏药乱吃（❌）","correct":"A"},{"q":"什么情况立即急诊？","a":"局部压痛（❌）","b":"压榨胸闷冷汗（✅心梗）","correct":"B"},{"q":"护理？","a":"驼背久坐（❌）","b":"端正坐姿+热敷（✅）","correct":"B"}]},{"title":"运动后肌肉酸痛","cat":"sport","symptoms":["运动后24-72h肌肉酸胀","压痛","活动受限"],"care":"拉伸按摩补水","otc":"对乙酰氨基酚（避免布洛芬长期掩盖损伤）；无需药","taboo":"布洛芬大量长期连续服（掩盖损伤肾损伤）","warn":"肌肉剧痛+尿茶色→横纹肌溶解！急诊！","quiz":[{"q":"运动后酸痛首选？","a":"拉伸+补水休息（✅）","b":"大量布洛芬（❌）","correct":"A"},{"q":"尿茶色肌肉剧痛？","a":"正常酸痛（❌）","b":"急诊（✅横纹肌溶解）","correct":"B"},{"q":"预防？","a":"突然高强度（❌）","b":"循序渐进热身（✅）","correct":"B"}]},{"title":"压力诱发偏头痛","cat":"mind","symptoms":["单侧搏动性头痛","畏光畏声","恶心呕吐","眼前闪光先兆"],"care":"","otc":"布洛芬（发作早期吃）；对乙酰氨基酚","taboo":"每月≥15天吃止痛药（药物过量性头痛）","warn":"\"平生最剧烈\"头痛、发热、颈部强直、肢体无力→蛛网膜下腔出血/脑膜炎，急诊！","quiz":[{"q":"偏头痛何时吃药？","a":"痛极了才吃（❌）","b":"发作早期尽快服用（✅）","correct":"B"},{"q":"止痛药频率？","a":"每天都吃（❌反跳）","b":"每周≤2-3天（✅）","correct":"B"},{"q":"最坏头痛+颈强直？","a":"偏头痛（❌）","b":"急诊（✅蛛网膜下腔出血）","correct":"B"}]},{"title":"横纹肌溶解综合征","cat":"sport","symptoms":["肌肉剧痛无力","尿茶色/酱油色","乏力"],"care":"急诊！无OTC","otc":"无OTC治疗药！唯一措施：大量补水+急诊","taboo":"服用止痛药继续运动","warn":"出现茶色尿→立即急诊（肌红蛋白堵塞肾小管→急性肾衰竭危及生命）","quiz":[{"q":"大量运动后茶色尿？","a":"喝水观察（❌）","b":"立刻急诊（✅肾衰）","correct":"B"},{"q":"能吃止痛药继续？","a":"可以（❌）","b":"绝对禁止（✅）","correct":"B"},{"q":"预防？","a":"突击训练（❌）","b":"循序渐进+补水（✅）","correct":"B"}]},{"title":"下肢深静脉血栓","cat":"sport","symptoms":["单侧小腿肿胀","压痛","皮温升高"],"care":"绝对急诊！","otc":"无OTC溶血栓药","taboo":"按摩肿胀腿部（血栓脱落→肺栓塞猝死！）；下床走动","warn":"单侧腿肿痛→立即急诊；出现胸痛呼吸困难→已肺栓塞，猝死风险！","quiz":[{"q":"单侧腿肿痛？","a":"按摩揉开（❌肺栓塞猝死）","b":"绝对不动+急诊（✅）","correct":"B"},{"q":"胸痛气促？","a":"深呼吸（❌）","b":"120急诊（✅肺栓塞）","correct":"B"},{"q":"久坐4h预防？","a":"不动（❌）","b":"每小时起身走动（✅）","correct":"B"}]},{"title":"轻症中暑","cat":"body","symptoms":["头晕","恶心","心慌","出汗多","体温≤38℃"],"care":"移阴凉、脱外衣、降温","otc":"补充电解质水；布洛芬退烧","taboo":"大量猛喝白开水（低钠）；冰水冲淋全身（休克）","warn":"体温≥40℃、意识不清、无汗→热射病！立即急诊（病死率高）","quiz":[{"q":"轻症中暑补水？","a":"大量白开水（❌低钠）","b":"电解质水少量多次（✅）","correct":"B"},{"q":"40℃意识不清？","a":"拖到空调房等（❌）","b":"急诊（✅热射病）","correct":"B"},{"q":"降温方式？","a":"冰水猛浇（❌）","b":"脱衣+扇风+凉毛巾（✅）","correct":"B"}]},{"title":"低血糖","cat":"body","symptoms":["头晕","心慌","手抖","出冷汗","饥饿感"],"care":"立刻补糖","otc":"立即口服糖水/糖果/饼干（非药物）","taboo":"忽视反复低血糖；糖尿病朋友盲目加强降糖药","warn":"意识不清不能强行喂糖（误吸）→急诊；反复晕厥查血糖","quiz":[{"q":"低血糖发作立即？","a":"补糖水糖果（✅）","b":"继续忍耐（❌）","correct":"A"},{"q":"意识不清？","a":"撬开嘴喂糖（❌误吸）","b":"急诊（✅）","correct":"B"},{"q":"预防？","a":"不吃早餐节食（❌）","b":"规律三餐（✅）","correct":"B"}]},{"title":"B族维生素缺乏","cat":"body","symptoms":["口角炎","舌炎","口腔溃疡反复","疲劳","情绪差"],"care":"均衡饮食","otc":"复合B族维生素片","taboo":"超大剂量长期服用（B6过量神经毒性）","warn":"严格按说明书剂量，不要自行超量","quiz":[{"q":"B族怎么吃？","a":"超大剂量（❌毒性）","b":"按说明书剂量（✅）","correct":"B"},{"q":"饮食怎么补？","a":"外卖奶茶（❌）","b":"绿叶菜+粗粮（✅）","correct":"B"},{"q":"典型缺乏症状？","a":"口角炎口腔溃疡反复（✅）","b":"咳嗽（❌）","correct":"A"}]},{"title":"维生素D不足","cat":"body","symptoms":["乏力","肌肉酸痛","反复感冒","骨痛"],"care":"室外日晒","otc":"维生素D制剂","taboo":"只吃药完全不晒太阳；长期超剂量","warn":"长期缺乏→骨质疏松风险、免疫下降，配合日晒","quiz":[{"q":"维D补充首选？","a":"只吃药（❌）","b":"配合室外日晒（✅）","correct":"B"},{"q":"日晒时间？","a":"正午暴晒1h（❌晒伤）","b":"早晚15-30分钟（✅）","correct":"B"},{"q":"维D缺乏表现？","a":"乏力骨痛反复感冒（✅）","b":"腹泻（❌）","correct":"A"}]},{"title":"胰岛素抵抗","cat":"body","symptoms":["餐后犯困","体重难降","腹型肥胖","黑棘皮（颈后发黑）"],"care":"饮食+运动","otc":"无OTC特效药","taboo":"依靠保健品调理血糖，延误诊治","warn":"体检空腹血糖≥5.6、餐后2h≥7.8→医院OGTT检查","quiz":[{"q":"胰岛素抵抗用保健品？","a":"调理血糖（❌）","b":"就医饮食运动（✅）","correct":"B"},{"q":"诊断靠什么？","a":"感觉（❌）","b":"医院OGTT+胰岛素（✅）","correct":"B"},{"q":"生活调整？","a":"久坐高糖（❌）","b":"运动+低碳饮食（✅）","correct":"B"}]},{"title":"节食减肥损伤","cat":"body","symptoms":["停经/月经紊乱","脱发","贫血","乏力","晕厥"],"care":"恢复饮食","otc":"无OTC特效药；复合维生素+铁剂辅助（贫血时）","taboo":"网红减肥药、极端节食代餐","warn":"月经停经≥3个月、大量脱发、晕厥→就医内分泌+营养","quiz":[{"q":"减肥用什么方法？","a":"网红减肥药+断食（❌）","b":"均衡饮食+运动（✅）","correct":"B"},{"q":"停经3个月？","a":"正常瘦了（❌）","b":"立即就医（✅）","correct":"B"},{"q":"节食晕厥？","a":"休息就好（❌）","b":"急诊（✅）","correct":"B"}]},{"title":"缺铁性贫血轻度（食补为主）","cat":"body","symptoms":["面色苍白","疲劳","头晕","运动后心慌"],"care":"补铁饮食","otc":"硫酸亚铁/琥珀酸亚铁（OTC，需VC同服）","taboo":"不吃正餐只喝咖啡奶茶；和浓茶咖啡同服（铁吸收抑制）","warn":"Hb<90g/L、黑便便血、月经量极大→就医排查出血原因","quiz":[{"q":"补铁时喝什么？","a":"浓茶咖啡（❌抑制吸收）","b":"橙汁VC（✅促进）","correct":"B"},{"q":"轻度贫血首选？","a":"红肉+动物血（✅食补）","b":"奶茶（❌）","correct":"A"},{"q":"黑便怎么办？","a":"继续补铁（❌）","b":"就医排查（✅消化道出血）","correct":"B"}]},{"title":"紧张性头痛","cat":"mind","symptoms":["全头紧箍感","压迫感","双侧","无恶心呕吐畏光"],"care":"放松+颈肩拉伸","otc":"布洛芬、对乙酰氨基酚；双氯芬酸乳胶剂颈肩外涂","taboo":"长期连续吃止痛药掩盖器质性病变","warn":"头痛伴呕吐、视物模糊、发热颈强→立即就医","quiz":[{"q":"紧张性头痛首选？","a":"颈肩拉伸+短期布洛芬（✅）","b":"长期吃止痛药（❌）","correct":"A"},{"q":"头痛+呕吐视物模糊？","a":"正常（❌）","b":"就医（✅）","correct":"B"},{"q":"预防？","a":"熬夜刷题（❌）","b":"作息规律+放松（✅）","correct":"B"}]},{"title":"梅尼埃（眩晕发作轻症）","cat":"mind","symptoms":["突发旋转性眩晕","耳鸣","耳闷","恶心呕吐","持续20分钟至数小时"],"care":"","otc":"甲磺酸倍他司汀（部分OTC，短期）；无特效药OTC","taboo":"眩晕发作时骑车/走路/下楼梯","warn":"眩晕伴肢体无力/言语不清/复视→中风！立即急诊","quiz":[{"q":"眩晕发作时？","a":"骑自行车去医院（❌）","b":"卧位呼叫120（✅）","correct":"B"},{"q":"伴言语不清肢体无力？","a":"梅尼埃（❌）","b":"急诊（✅中风）","correct":"B"},{"q":"预防？","a":"睡眠剥夺（❌）","b":"限盐休息（✅）","correct":"B"}]},{"title":"短期压力性轻度失眠","cat":"mind","symptoms":["上床30min睡不着","早醒","连续≤2周"],"care":"睡眠卫生","otc":"谷维素片","taboo":"自行网购安眠药（管制处方药，违法）；酒助眠","warn":"失眠超2周、严重影响学习生活→心理中心/精神科就诊","quiz":[{"q":"考前失眠先？","a":"网购安眠药（❌违法）","b":"谷维素+睡眠卫生（✅）","correct":"B"},{"q":"安眠药能买吗？","a":"电商能买到（❌管制）","b":"处方药需医生开（✅）","correct":"B"},{"q":"失眠≥2周？","a":"习惯了（❌）","b":"就医/心理咨询（✅）","correct":"B"}]},{"title":"植物神经功能紊乱","cat":"mind","symptoms":["心慌","手抖","出汗","胃胀","头晕","失眠","情绪差时加重"],"care":"","otc":"谷维素片；复合维生素B","taboo":"躯体不适\"查不出病就当没病\"（忽视真实器质性可能）","warn":"躯体症状需先体检排除器质性疾病，再做身心调节","quiz":[{"q":"躯体不适怎么办？","a":"查不出就不管（❌）","b":"排除器质性+身心调节（✅）","correct":"B"},{"q":"调节方式？","a":"继续熬夜压力（❌）","b":"作息+运动+放松（✅）","correct":"B"},{"q":"能用什么？","a":"谷维素（✅）","b":"安眠药自购（❌）","correct":"A"}]},{"title":"血管迷走性晕厥","cat":"mind","symptoms":["头晕恶心出冷汗→眼前发黑→短暂倒地意识丧失"],"care":"","otc":"无OTC特效药","taboo":"晕倒后强行拉起站立","warn":"晕厥前立即坐下/躺下（防摔伤）；反复晕厥全面心脏+神经检查","quiz":[{"q":"晕厥前兆时？","a":"坚持站立（❌摔伤）","b":"立即坐下或躺下（✅）","correct":"B"},{"q":"晕倒后怎么办？","a":"立刻拉起（❌）","b":"平卧抬高下肢（✅）","correct":"B"},{"q":"反复晕厥？","a":"体质差而已（❌）","b":"心脏+神经全面检查（✅）","correct":"B"}]},{"title":"紧张引发的自主神经心慌","cat":"mind","symptoms":["突然心慌","胸闷","手抖","出汗","过度换气"],"care":"","otc":"无对症OTC药物；深呼吸+憋气缓解","taboo":"自行吃\"稳心\"处方药","warn":"伴胸痛压榨、冷汗、左肩痛→心脏急诊；多次发作查心电图","quiz":[{"q":"焦虑心慌首先？","a":"4-7-8深呼吸（✅）","b":"吃处方药（❌）","correct":"A"},{"q":"什么情况急诊？","a":"胸痛压榨冷汗（✅心梗）","b":"面试前心慌（❌）","correct":"A"},{"q":"过度换气手麻？","a":"纸袋呼吸（✅CO2回吸）","b":"更大口喘气（❌）","correct":"A"}]},{"title":"轻度更年期/内分泌波动不适","cat":"body","symptoms":["潮热出汗","失眠","情绪波动","心悸"],"care":"作息、温度调节","otc":"谷维素；复合B族维生素","taboo":"自行网购雌激素/避孕药调节","warn":"月经紊乱、大量出血、抑郁→妇科/内分泌科规范就诊","quiz":[{"q":"潮热失眠首选？","a":"网购激素（❌）","b":"谷维素+就医评估（✅）","correct":"B"},{"q":"大量出血？","a":"正常（❌）","b":"妇科就诊（✅）","correct":"B"},{"q":"情绪波动？","a":"不管（❌）","b":"适度放松（✅）","correct":"B"}]},{"title":"心理焦虑躯体化（轻度）","cat":"mind","symptoms":["头痛","胸闷","腹泻","皮肤痒","但检查都正常"],"care":"","otc":"谷维素片、复合B族维生素（辅助）","taboo":"只查躯体、忽视心理；长期自行吃安眠药","warn":"严重影响学习生活→学校心理中心+精神科","quiz":[{"q":"检查都正常还难受？","a":"没事（❌）","b":"心理咨询+心身医学（✅）","correct":"B"},{"q":"辅助用什么？","a":"安眠药（❌）","b":"谷维素+维B（✅）","correct":"B"},{"q":"调节？","a":"一直内卷（❌）","b":"运动+冥想+睡眠（✅）","correct":"B"}]},{"title":"高温环境情绪烦躁、躯体不适","cat":"mind","symptoms":["烦躁易怒","失眠","头痛","食欲差","注意力下降"],"care":"","otc":"无特殊OTC；补充电解质水；藿香正气水（中暑时）","taboo":"藿香正气水+头孢（酒精！）；大量冰饮","warn":"藿香正气水含酒精40-50%，严禁和头孢/甲硝唑同用（双硫仑）","quiz":[{"q":"藿香正气水能和头孢同服吗？","a":"可以（❌致命）","b":"绝对不能（✅）","correct":"B"},{"q":"高温降温？","a":"冰饮猛灌（❌）","b":"电解质水少量多次（✅）","correct":"B"},{"q":"高温烦躁？","a":"吹风扇+通风（✅）","b":"太阳下跑（❌）","correct":"A"}]},{"title":"蜱虫叮咬后后期观察","cat":"skin","symptoms":["潜伏期发热","皮疹（游走性红斑靶心样）","关节痛"],"care":"","otc":"无","taboo":"忽视发热皮疹、硬扛","warn":"30天内任何发热皮疹→立即就医（莱姆病、森林脑炎等）","quiz":[{"q":"叮咬后30天内发热皮疹？","a":"感冒（❌）","b":"就医（✅蜱传病）","correct":"B"},{"q":"游走性红斑？","a":"莱姆病典型皮疹（✅就医）","b":"蚊虫咬（❌）","correct":"A"},{"q":"预防蜱虫病？","a":"不去草丛（❌）","b":"防护+叮咬后观察30天（✅）","correct":"B"}]},{"title":"轻微擦伤划伤","cat":"skin","symptoms":["表皮破损","少量渗血"],"care":"清洁消毒","otc":"碘伏消毒液；莫匹罗星软膏；创可贴、无菌纱布","taboo":"酒精涂抹破损创面（剧痛+组织损伤）；牙膏香灰敷","warn":"深伤口、生锈金属致伤、狗/猫咬伤→就医评估破伤风/狂犬病","quiz":[{"q":"擦伤消毒用？","a":"酒精（❌剧痛）","b":"碘伏（✅温和）","correct":"B"},{"q":"生锈铁钉深伤口？","a":"贴创可贴（❌）","b":"就医破伤风（✅）","correct":"B"},{"q":"猫抓伤？","a":"不管（❌）","b":"狂犬病疫苗就医（✅）","correct":"B"}]},{"title":"Ⅰ度轻度烧烫伤（仅发红不起泡）","cat":"skin","symptoms":["皮肤发红","灼痛","无水疱"],"care":"凉水冲洗！","otc":"冷水冲洗15-20分钟后；湿润烧伤膏","taboo":"牙膏、酱油、香油涂抹创面（感染+清创难）；冰敷","warn":"起泡破溃（Ⅱ度）→严禁自行挑破，尽快就医","quiz":[{"q":"轻度烫伤立刻？","a":"凉水冲15-20min（✅）","b":"牙膏涂（❌）","correct":"A"},{"q":"起水泡怎么办？","a":"自己挑破（❌）","b":"就医（✅）","correct":"B"},{"q":"Ⅰ度烫伤用？","a":"湿润烧伤膏（✅）","b":"酱油（❌）","correct":"A"}]},{"title":"久坐下肢水肿","cat":"sport","symptoms":["久坐后双侧脚踝/小腿肿胀","早上轻晚上重","按压凹陷"],"care":"","otc":"无药；运动+抬高下肢","taboo":"按摩单侧肿腿（如有血栓→脱落）","warn":"单侧突然肿胀、疼痛、皮温高→立即就医（深静脉血栓）","quiz":[{"q":"久坐水肿缓解？","a":"每小时活动+抬高腿（✅）","b":"不动（❌）","correct":"A"},{"q":"单侧突然肿痛？","a":"正常肿（❌）","b":"急诊（✅血栓）","correct":"B"},{"q":"预防？","a":"久坐10h不动（❌）","b":"定时活动走动（✅）","correct":"B"}]},{"title":"秋季干燥流鼻血","cat":"resp","symptoms":["单侧反复少量出血","鼻中隔前份"],"care":"加湿滋润","otc":"复方薄荷脑滴鼻液；生理盐水喷雾","taboo":"仰头止血、抠鼻","warn":"出血量多+按压20分钟不止、频繁反复→就医","quiz":[{"q":"干燥期预防？","a":"薄荷脑滴鼻液滋润（✅）","b":"抠鼻清理（❌）","correct":"A"},{"q":"出血姿势？","a":"仰头（❌）","b":"前倾捏鼻翼（✅）","correct":"B"},{"q":"按压20分钟不止？","a":"继续仰（❌）","b":"就医（✅）","correct":"B"}]},{"title":"口腔溃疡继发轻微感染","cat":"sense","symptoms":["口腔溃疡面积变大","周围红肿加重","化脓"],"care":"清洁","otc":"复方氯己定含漱液；莫匹罗星软膏（唇部皮肤）","taboo":"撒盐、白酒、激素长期","warn":"2周不愈、硬结、剧痛→就医","quiz":[{"q":"溃疡感染用？","a":"白酒（❌）","b":"氯己定含漱（✅）","correct":"B"},{"q":"2周不愈？","a":"继续加药（❌）","b":"就医（✅）","correct":"B"},{"q":"护理？","a":"辛辣（❌）","b":"软食+口腔清洁（✅）","correct":"B"}]},{"title":"传染性单核细胞增多症","cat":"resp","symptoms":["高热","咽峡炎扁桃体白苔","颈淋巴结大","乏力肝大"],"care":"","otc":"布洛芬/对乙酰氨基酚（退烧止痛）；复方氯己定含漱液","taboo":"头孢/阿莫西林（皮疹误诊）；剧烈运动（脾破裂！）","warn":"绝对休息4周以上，忌剧烈运动（脾脏肿大，外力破裂致命）","quiz":[{"q":"传单退烧用？","a":"阿莫西林（❌皮疹）","b":"对乙酰氨基酚（✅）","correct":"B"},{"q":"传单多久不能剧烈运动？","a":"1周（❌）","b":"≥4周（✅防脾破裂）","correct":"B"},{"q":"传单属于？","a":"细菌感染（❌）","b":"EB病毒感染（✅）","correct":"B"}]},{"title":"过期药品安全","cat":"body","symptoms":["过期药：药效衰减","成分分解变质"],"care":"","otc":"—（定期清理药箱）","taboo":"过期药继续服用；窗台暴晒存放","warn":"过期抗生素、心血管药、胰岛素→绝对不能用，立即丢弃","quiz":[{"q":"过期1个月药？","a":"没开封能吃（❌）","b":"必须丢弃（✅）","correct":"B"},{"q":"药存放？","a":"窗台暴晒（❌）","b":"阴凉干燥避光（✅）","correct":"B"},{"q":"过期胰岛素？","a":"省钱继续用（❌严重）","b":"丢弃（✅）","correct":"B"}]},{"title":"网红聪明药、海淘减肥药","cat":"body","symptoms":["服用后心慌失眠","头晕","幻觉","体重骤降"],"care":"","otc":"—（无安全OTC减肥药）","taboo":"网购、代购、私自服用管制精神类药物（违法！）","warn":"私自购买/使用精神药品→违法；成瘾、心脏骤停、猝死风险","quiz":[{"q":"网红聪明药能买吗？","a":"同学推就买（❌违法）","b":"绝对不能（✅）","correct":"B"},{"q":"减肥药首选？","a":"海淘（❌）","b":"饮食运动+就医（✅）","correct":"B"},{"q":"服用后心慌晕厥？","a":"继续用（❌）","b":"急诊（✅）","correct":"B"}]}]};
+
+/* ================= 部位快捷入口（映射到大类） ================= */
+const PARTS = [
+  {icon:"🫁", name:"头胸呼吸",   cat:"resp"},
+  {icon:"🍚", name:"腹部肠胃",   cat:"digest"},
+  {icon:"🧠", name:"情绪睡眠",   cat:"mind"},
+  {icon:"🏃", name:"四肢关节",   cat:"sport"},
+  {icon:"🩹", name:"皮肤外在",   cat:"skin"},
+  {icon:"👁️", name:"五官口腔",   cat:"sense"},
+  {icon:"🚺", name:"女性专区",   cat:"women"},
+  {icon:"❤️", name:"全身状态",   cat:"body"},
+];
+
+let currentCat = null;          // 当前选中的大类 id
+const selected = new Set();     // 已勾选症状集合（分类模式）
+let mode = "cat";               // "cat"=分类勾选模式 | "global"=全局搜索模式
+let globalTerms = [];           // 全局搜索模式的关键词列表
+let suggCache = [];             // 搜索联想缓存（避免onclick引号转义问题）
+
+/* ═══════════════════════════════════════════════════════════════
+   📖 口语同义词库（日常补充就改这里）
+   ─────────────────────────────────────────────────────────────
+   用法：左边引号里是"用户可能输入的口语词"，右边数组里放
+        该词的各种同义说法（≥2个字），用逗号分隔、双引号包裹。
+   示例："鼻子不通" : ["鼻塞", "鼻堵", "鼻子堵"],
+   说明：不需要写全 106 种病名，只要口语词能对上卡片里的
+        症状片段即可；匹配时支持双向包含，改完保存刷新生效。
+   ═══════════════════════════════════════════════════════════════ */
+const SYNONYMS = {
+  /* 发烧 / 全身 */
+  "发烧": ["发热","低烧","低热","高烧","高热","体温升高","午后低热","38"],
+  "发热": ["发烧","低烧","低热","高烧","高热"],
+  "低烧": ["低热","发热","37.5","38"],
+  "高烧": ["高热","发热","38.5","39"],
+  "浑身酸痛": ["酸痛","肌肉酸痛","乏力","酸痛胀"],
+  "没精神": ["乏力","疲劳","倦怠","精神差","食欲差"],
+  "没力气": ["乏力","疲劳","无力","酸胀"],
+  "累": ["疲劳","乏力","没精神","倦怠"],
+  "出汗多": ["出汗","盗汗","多汗","潮热出汗","出汗多"],
+  "出冷汗": ["冷汗","面色苍白","大汗"],
+  "水肿": ["肿胀","脚踝","按压凹陷","下肢水肿"],
+  /* 头 / 神经 / 心理 */
+  "头疼": ["头痛","搏动性头痛","紧箍感","压迫感","偏头痛","全头"],
+  "头痛": ["头疼","搏动性头痛","紧箍感","压迫感","偏头痛"],
+  "偏头痛": ["搏动性头痛","头痛","畏光畏声"],
+  "头晕": ["眩晕","头昏","眼前发黑","旋转性眩晕","晕厥"],
+  "眩晕": ["头晕","旋转性眩晕","天旋地转","耳鸣"],
+  "晕倒": ["晕厥","意识丧失","眼前发黑","倒地"],
+  "晕车": ["晕动","恶心呕吐","乘车"],
+  "失眠": ["睡不着","入睡困难","早醒","睡眠差","上床30min"],
+  "睡不着": ["失眠","入睡困难","早醒","睡眠"],
+  "早醒": ["失眠","睡眠","睡不着"],
+  "心慌": ["心悸","心跳快","心跳加速","突然心慌","心脏","过度换气"],
+  "心悸": ["心慌","心跳","心脏"],
+  "手抖": ["颤抖","发抖","手颤","低血糖"],
+  "磨牙": ["磨牙齿","夜磨牙","牙齿磨耗"],
+  "压力大": ["压力","紧张","焦虑","情绪差","烦躁","情绪低落"],
+  "焦虑": ["紧张","压力","心慌","不安","烦躁","躯体化"],
+  "情绪低落": ["情绪差","情绪波动","易怒","烦躁","低落"],
+  "烦躁": ["易怒","情绪","焦虑","压力大","高温环境"],
+  "注意力不集中": ["注意力下降","专注"],
+  /* 呼吸 */
+  "感冒": ["鼻塞","流涕","咽痛","低烧","打喷嚏","清水样鼻涕","乏力"],
+  "流鼻涕": ["流涕","清水样鼻涕","清涕","脓涕","鼻涕","流鼻水"],
+  "鼻塞": ["鼻子不通气","鼻堵","鼻子堵","不通气"],
+  "打喷嚏": ["喷嚏","连续打喷嚏","晨起连续打喷嚏"],
+  "咳嗽": ["干咳","咳痰","黄痰","白痰","刺激性干咳","镇咳","咽部痰堵"],
+  "干咳": ["咳嗽","刺激性干咳","镇咳"],
+  "痰多": ["黄痰","白痰","排痰","咽部痰堵","痰"],
+  "嗓子疼": ["咽痛","咽喉痛","咽部干痛","咽干","喉咙","嗓子","吞咽时加重"],
+  "喉咙痛": ["咽痛","咽喉痛","嗓子疼","咽部干痛","吞咽"],
+  "流鼻血": ["鼻衄","鼻腔出血","鼻出血","单侧鼻腔出血"],
+  "鼻痒": ["鼻子痒","鼻痒","揉鼻"],
+  /* 消化 */
+  "拉肚子": ["腹泻","水样腹泻","稀便","脓血便","拉稀","跑厕所","里急后重","大便"],
+  "腹泻": ["拉肚子","水样腹泻","稀便","脓血便","拉稀"],
+  "拉稀": ["拉肚子","腹泻","稀便","水样腹泻"],
+  "肚子疼": ["腹痛","腹绞痛","绞痛","阵发性腹痛","下腹痛","左下腹痛","脐周","腹部"],
+  "肚子痛": ["腹痛","腹绞痛","绞痛","肚子疼","阵发性腹痛"],
+  "胃疼": ["胃部","上腹痛","上腹部灼热痛","胃痛","灼热痛","痉挛"],
+  "胃胀": ["腹胀","胀满","嗳气","功能性胀气","餐后上腹胀"],
+  "胀气": ["腹胀","胃胀","嗳气","打嗝","饱嗝","放屁","肠鸣"],
+  "打嗝": ["嗳气","饱嗝","胀气","不停打饱嗝"],
+  "放屁多": ["排气","胀气","肠鸣"],
+  "恶心": ["恶心呕吐","想吐","反胃","干呕","轻微恶心"],
+  "想吐": ["恶心","呕吐","反胃","干呕"],
+  "呕吐": ["恶心呕吐","喷射","吐"],
+  "反酸": ["烧心","反流","反酸水","胸口灼热","胃部灼热"],
+  "烧心": ["反酸","胸口灼热","上腹部灼热痛","反流"],
+  "便秘": ["排便费力","便干硬","排便","每周排便"],
+  "口臭": ["口气","口气重","舌苔厚"],
+  "食欲差": ["不想吃","食欲不振","胃口差","腹胀不想吃"],
+  "口干": ["口干","干燥","喝"],
+  /* 泌尿 / 女性 */
+  "尿频": ["尿急","尿痛","尿路","上厕所","跑厕所","尿量少","想上厕所"],
+  "尿急": ["尿频","尿痛","尿路"],
+  "尿痛": ["尿频","尿急","尿路","血尿"],
+  "痛经": ["经期","下腹绞痛","月经","大姨妈","原发性痛经","绞痛"],
+  "月经": ["经期","大姨妈","停经","月经紊乱","痛经","经前"],
+  "大姨妈": ["月经","经期","痛经"],
+  "月经不调": ["月经紊乱","停经","经期"],
+  "白带异常": ["白带","分泌物","异味","豆腐渣"],
+  "乳房胀痛": ["乳房","胀痛","经前"],
+  /* 皮肤 */
+  "长痘": ["痤疮","粉刺","丘疹","痘痕","痘痘","红色丘疹","脓疱"],
+  "痘痘": ["痤疮","粉刺","长痘","丘疹"],
+  "皮肤痒": ["瘙痒","痒","剧痒","刺痒","极痒","湿疹","荨麻疹"],
+  "瘙痒": ["痒","剧痒","刺痒","极痒","湿疹","荨麻疹","风团"],
+  "过敏": ["荨麻疹","皮疹","风团","红斑","过敏性","湿疹"],
+  "皮疹": ["红斑","丘疹","风团","疹"],
+  "脚气": ["足癣","脱皮","脚趾缝","脚臭","癣"],
+  "脱皮": ["足癣","癣","脚趾缝","脱屑"],
+  "晒伤": ["晒后","暴晒","日光","日晒","紫外线"],
+  "蚊虫叮咬": ["虫咬","叮咬","蚊子","丘疹"],
+  "蚊子包": ["蚊虫","虫咬","叮咬","丘疹"],
+  "烫伤": ["烧烫伤","热水","蒸汽","发红不起泡"],
+  "擦伤": ["划伤","破皮","表皮破损","渗血"],
+  "淤青": ["淤血","青紫","撞击","挫伤"],
+  "冻疮": ["湿冷","红肿痒","耳廓","手脚"],
+  "脱发": ["掉发","头发"],
+  "湿疹": ["瘙痒","红斑","渗出","丘疹"],
+  /* 五官 */
+  "口腔溃疡": ["口疮","溃烂","溃疡","舌面小溃疡","假膜","反复"],
+  "口疮": ["口腔溃疡","溃疡","溃烂"],
+  "牙疼": ["牙痛","牙龈肿痛","智齿","肿痛","张口","刺痛"],
+  "牙痛": ["牙疼","智齿","牙龈","肿痛"],
+  "智齿": ["智齿冠周","牙龈肿痛","张口困难","脸颊肿"],
+  "眼睛干": ["眼干","干眼","视疲劳","眼疲劳"],
+  "眼睛痒": ["眼痒","眼红","结膜炎","流泪","异物感"],
+  "眼睛红": ["眼红","血丝","结膜"],
+  "视力模糊": ["视物模糊","视力","模糊"],
+  "耳朵痒": ["耳道","耳廓","外耳道","进水"],
+  "嗓子有痰": ["咽部痰堵","痰","清嗓","异物感"],
+  /* 运动 / 损伤 */
+  "崴脚": ["扭伤","脚踝","肿胀淤血","不能负重","踝"],
+  "扭伤": ["崴脚","肿胀","淤血","踝","负重"],
+  "抽筋": ["痉挛","强直","小腿","肌肉突发"],
+  "肌肉酸痛": ["酸痛","酸胀","运动后","肌肉"],
+  "运动后酸痛": ["肌肉酸痛","酸胀","运动后24-72h"],
+  "脖子疼": ["颈肩","颈部","僵硬酸痛","低头","颈椎"],
+  "颈椎疼": ["颈肩","僵硬","低头","颈椎"],
+  "腰疼": ["腰肌","腰部","腰酸","久坐","劳损"],
+  "腰酸": ["腰肌","腰部","酸痛","久坐"],
+  "脚跟疼": ["足底","足跟","下床第一步","筋膜炎"],
+  "膝盖疼": ["膝","关节痛","应力"],
+  "胸闷": ["胸口","胸部","憋气","压迫"],
+  /* 全身 / 生活 */
+  "中暑": ["高温","体温","晒","热射","轻症中暑"],
+  "低血糖": ["饥饿感","手抖","出冷汗","面色苍白","心慌"],
+  "贫血": ["面色苍白","头晕","乏力","缺铁","月经量"],
+  "减肥": ["节食","体重","减肥药","瘦"],
+  "失眠多梦": ["失眠","睡眠","早醒","睡不着"],
+};
+
+/* 判断用户词 query 与标准症状 sym 是否匹配（精确 / 同义词组 / 双向子串） */
+function symMatch(query, sym){
+  query = (query || "").trim();
+  sym = (sym || "").trim();
+  if(!query || !sym) return false;
+  if(query === sym) return true;
+  // 汇聚候选词：用户词自身 + 其同义词组 + 同义词组各词的组内词
+  const words = new Set([query]);
+  const expand = (w) => {
+    (SYNONYMS[w] || []).forEach(t => words.add(t));
+  };
+  expand(query);
+  // 反向：标准症状若本身是某个词组的同义词，把该组主词也并入
+  for(const k in SYNONYMS){
+    if(k === sym || SYNONYMS[k].indexOf(sym) >= 0) words.add(k);
+  }
+  for(const w of words){
+    // 单字词仅允许用户原始输入直配，避免"烧"误配"烧心"这类噪音
+    if(w.length < 2 && w !== query) continue;
+    if(sym.indexOf(w) >= 0 || w.indexOf(sym) >= 0) return true;
+  }
+  return false;
+}
+
+/* 把一段输入拆成多个关键词（空格/逗号/顿号分隔） */
+function parseTerms(raw){
+  return raw.split(/[\s,，、;；/]+/).map(s => s.trim()).filter(s => s.length > 0);
+}
+
+/* ---------- 渲染：部位快捷入口 + 分类卡片 ---------- */
+function renderCats(){
+  const partRow = document.getElementById("partRow");
+  const grid = document.getElementById("catGrid");
+  partRow.innerHTML = PARTS.map(p =>
+    `<button class="part-chip" onclick="openCat('${p.cat}')"><span class="dot">${p.icon}</span>${p.name}</button>`
+  ).join("");
+  grid.innerHTML = DATA.cats.map(c => `
+    <div class="cat-card cat-${c.id}" onclick="openCat('${c.id}')">
+      <div class="icon">${c.icon}</div>
+      <h3>${c.name}</h3>
+      <p>${c.desc}</p>
+      <span class="count">${c.count} 种常见情况</span>
+    </div>
+  `).join("");
+}
+
+/* ---------- 打开某大类：渲染症状气泡 ---------- */
+function openCat(catId){
+  currentCat = catId;
+  mode = "cat";
+  selected.clear();
+  globalTerms = [];
+  hideSugg();
+  const cat = DATA.cats.find(c => c.id === catId);
+
+  // 汇总该大类所有疾病症状并去重
+  const syms = new Set();
+  DATA.diseases.filter(d => d.cat === catId).forEach(d => d.symptoms.forEach(s => syms.add(s)));
+  const symList = [...syms];
+
+  document.getElementById("checkTitle").innerHTML =
+    `<span class="mini">${cat.icon}</span>${cat.name} · 症状勾选`;
+  // 恢复筛选框并重置
+  document.getElementById("symSearchWrap").style.display = "";
+  document.getElementById("symSearchInput").value = "";
+  document.getElementById("symCloud").innerHTML = symList.map(s =>
+    `<button class="sym-chip" data-sym="${s}" onclick="toggleSym(this)">${s}</button>`
+  ).join("");
+  document.getElementById("results").classList.remove("active");
+  document.getElementById("resList").innerHTML = "";
+  updateSelNum();
+
+  document.getElementById("checker").classList.add("active");
+  document.getElementById("check").scrollIntoView({behavior:"smooth"});
+}
+
+/* ---------- 返回分类 ---------- */
+function backToCats(){
+  document.getElementById("checker").classList.remove("active");
+  hideSugg();
+  document.getElementById("cats").scrollIntoView({behavior:"smooth"});
+}
+
+/* ---------- 症状勾选 ---------- */
+function toggleSym(btn){
+  const s = btn.dataset.sym;
+  if(selected.has(s)){ selected.delete(s); btn.classList.remove("on"); }
+  else{ selected.add(s); btn.classList.add("on"); }
+  updateSelNum();
+}
+function updateSelNum(){
+  const n = mode === "global" ? globalTerms.length : selected.size;
+  document.getElementById("selNum").textContent = n;
+  document.getElementById("analyzeBtn").disabled = n === 0;
+}
+function clearSel(){
+  selected.clear();
+  globalTerms = [];
+  document.querySelectorAll(".sym-chip.on").forEach(b => b.classList.remove("on"));
+  if(mode === "global") renderGlobalTerms();
+  updateSelNum();
+  document.getElementById("results").classList.remove("active");
+  toast("已清空勾选");
+}
+
+/* ---------- 分类模式：症状气泡筛选（同义词感知） ---------- */
+function filterSyms(){
+  const q = document.getElementById("symSearchInput").value.trim();
+  const chips = document.querySelectorAll("#symCloud .sym-chip");
+  if(!q){ chips.forEach(c => c.style.display = ""); return; }
+  let shown = 0;
+  chips.forEach(c => {
+    const show = symMatch(q, c.dataset.sym);
+    c.style.display = show ? "" : "none";
+    if(show) shown++;
+  });
+  if(shown === 0) toast("该分类下没有匹配的口语说法，试试首页全局搜索");
+}
+function clearFilter(){
+  document.getElementById("symSearchInput").value = "";
+  filterSyms();
+}
+
+/* ---------- 全局搜索：跨分类同义词匹配 ---------- */
+function globalSearch(){
+  const raw = document.getElementById("globalSearchInput").value.trim();
+  if(!raw){ toast("请先输入症状，如：拉肚子 / 睡不着"); return; }
+  const terms = parseTerms(raw);
+  if(!terms.length){ toast("请输入有效的症状关键词"); return; }
+  mode = "global";
+  currentCat = null;
+  globalTerms = terms;
+  selected.clear();
+  hideSugg();
+  document.getElementById("checkTitle").innerHTML =
+    `<span class="mini">🔎</span>智能搜索 · 跨分类匹配`;
+  // 全局模式隐藏分类筛选框，用词云展示搜索关键词
+  setQuizMode(false);   // 退出可能残留的分类自测界面（恢复各区域显示）
+  document.getElementById("symSearchWrap").style.display = "none";
+  document.getElementById("quizEntryBtn").style.display = "none";
+  renderGlobalTerms();
+  updateSelNum();
+  document.getElementById("results").classList.remove("active");
+  document.getElementById("checker").classList.add("active");
+  document.getElementById("check").scrollIntoView({behavior:"smooth"});
+  runInfer();
+}
+function quickSearch(word){
+  document.getElementById("globalSearchInput").value = word;
+  globalSearch();
+}
+/* 全局模式：展示已输入的关键词（点击可移除） */
+function renderGlobalTerms(){
+  const cloud = document.getElementById("symCloud");
+  if(!globalTerms.length){
+    cloud.innerHTML = `<span style="font-size:13px;color:var(--ink-soft)">暂无关键词，请回到首页输入症状</span>`;
+    return;
+  }
+  cloud.innerHTML = globalTerms.map((t, i) =>
+    `<button class="sym-chip on" onclick="removeTerm(${i})">✕ ${t}</button>`
+  ).join("");
+}
+function removeTerm(idx){
+  globalTerms.splice(idx, 1);
+  renderGlobalTerms();
+  updateSelNum();
+  if(globalTerms.length){ runInfer(); }
+  else{ document.getElementById("results").classList.remove("active"); }
+}
+
+/* ---------- 搜索联想（实时） ---------- */
+function onSearchInput(){
+  const q = document.getElementById("globalSearchInput").value.trim();
+  const box = document.getElementById("suggBox");
+  if(!q){ box.classList.remove("show"); return; }
+  const seen = new Set();
+  suggCache = [];
+  outer:
+  for(const d of DATA.diseases){
+    for(const s of d.symptoms){
+      if(symMatch(q, s) && !seen.has(s)){
+        seen.add(s);
+        suggCache.push({sym: s, cat: DATA.cats.find(c => c.id === d.cat)});
+        if(suggCache.length >= 8) break outer;
+      }
+    }
+  }
+  if(!suggCache.length){ box.classList.remove("show"); return; }
+  box.innerHTML = suggCache.map((o, i) =>
+    `<button type="button" onclick="pickSugg(${i})">
+       <span class="cat-mini">${o.cat.icon} ${o.cat.name}</span><span>${o.sym}</span>
+     </button>`).join("");
+  box.classList.add("show");
+}
+function pickSugg(idx){
+  const o = suggCache[idx];
+  if(!o) return;
+  document.getElementById("globalSearchInput").value = o.sym;
+  globalSearch();
+}
+function hideSugg(){
+  const box = document.getElementById("suggBox");
+  if(box) box.classList.remove("show");
+}
+
+/* ---------- 推断入口：分发到分类模式 / 全局搜索模式 ---------- */
+function analyze(){
+  if(mode === "global"){ runInfer(); return; }
+  if(!selected.size) return;
+  const picked = [...selected];
+  const list = DATA.diseases
+    .filter(d => d.cat === currentCat)
+    .map(d => {
+      // 同义词扩展匹配：勾选"鼻塞"也能命中含"鼻子不通气"等说法的疾病
+      const hits = d.symptoms.filter(s => picked.some(q => symMatch(q, s)));
+      return {d, hits, rate: d.symptoms.length ? hits.length / d.symptoms.length : 0};
+    })
+    .filter(x => x.hits.length > 0)
+    .sort((a,b) => b.hits.length - a.hits.length || b.rate - a.rate)
+    .slice(0, 8);
+  renderResults(list, "😶 未匹配到该分类下的常见情况。<br>试试增减症状，或换个分类重新勾选～<br>也可以用首页的全局搜索直接输入口语描述。<br><br>⚠️ 若症状明显或持续加重，请直接前往校医院就诊。", false);
+}
+
+/* ---------- 全局搜索模式推断：跨全部分类 ---------- */
+function runInfer(){
+  if(!globalTerms.length) return;
+  const list = DATA.diseases
+    .map(d => {
+      const hits = d.symptoms.filter(s => globalTerms.some(q => symMatch(q, s)));
+      return {d, hits, rate: d.symptoms.length ? hits.length / d.symptoms.length : 0};
+    })
+    .filter(x => x.hits.length > 0)
+    .sort((a,b) => b.hits.length - a.hits.length || b.rate - a.rate)
+    .slice(0, 10);
+  renderResults(list, "😶 没有匹配到相关情况。<br>换个说法试试（如：拉肚子 → 腹泻），或点击下方分类手动勾选。<br><br>⚠️ 若症状明显或持续加重，请直接前往校医院就诊。", true);
+}
+
+/* ---------- 渲染推断结果 ---------- */
+function renderResults(list, emptyMsg, showCat){
+  const box = document.getElementById("results");
+  const listEl = document.getElementById("resList");
+  box.classList.add("active");
+
+  if(!list.length){
+    listEl.innerHTML = `<div class="res-empty">${emptyMsg}</div>`;
+    box.scrollIntoView({behavior:"smooth"});
+    return;
+  }
+
+  listEl.innerHTML = list.map((x, i) => {
+    const d = x.d;
+    const pct = Math.round(x.rate * 100);
+    const hot = pct >= 60;
+    const restSyms = d.symptoms.filter(s => !x.hits.includes(s)).slice(0, 6);
+    const isUrgent = /就医|急诊|立即|医院/.test(d.warn);
+    const catInfo = DATA.cats.find(c => c.id === d.cat);
+    const catBadge = showCat && catInfo
+      ? `<button class="cat-badge" onclick="openCat('${d.cat}')">${catInfo.icon} ${catInfo.name} ›</button>` : "";
+    return `
+    <div class="res-card" style="animation-delay:${i*0.07}s">
+      <div class="res-top">
+        <h4>🩹 ${d.title}</h4>
+        <span class="match-badge ${hot ? "hot" : ""}">匹配度 ${pct}% · 命中 ${x.hits.length} 项</span>
+      </div>
+      <div class="sym-tags">
+        ${catBadge}
+        ${x.hits.map(s => `<span class="tag hit">✔ ${s}</span>`).join("")}
+        ${restSyms.map(s => `<span class="tag rest">${s}</span>`).join("")}
+      </div>
+      <div class="res-detail">
+        <div class="row care"><span class="k">🧴 护理：</span><span>${d.care || "—"}</span></div>
+        <div class="row otc"><span class="k">💊 OTC 参考：</span><span>${d.otc || "—"}</span></div>
+        <div class="row taboo"><span class="k">🚫 禁忌：</span><span>${d.taboo || "—"}</span></div>
+      </div>
+      ${d.warn ? `<div class="res-warn ${isUrgent ? "" : "safe"}">${isUrgent ? "⚠️" : "💡"} ${d.warn}</div>` : ""}
+    </div>`;
+  }).join("");
+
+  box.scrollIntoView({behavior:"smooth"});
+  toast(`为你匹配到 ${list.length} 种可能情况`);
+}
+
+/* ================= 分类自测（每类5题 · 每题20分 · 满分100） =================
+   从当前分类所有疾病的自测题中随机抽取 5 题；
+   评分：≥80 掌握良好；60-79 重点记禁忌；<60 薄弱重学 */
+let quizMode = false;    // 是否处于自测模式
+let quizItems = [];      // 本轮抽中的题目（含来源疾病信息）
+let quizIdx = 0;         // 当前题号
+let quizScore = 0;       // 答对题数
+let quizAnswered = false;
+let quizChosen = null;
+
+/* 洗牌（Fisher-Yates） */
+function shuffle(arr){
+  for(let i = arr.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+/* 进入/退出自测模式：隐藏症状勾选区，显示题目区 */
+function setQuizMode(on){
+  quizMode = on;
+  document.getElementById("symSearchWrap").style.display = on ? "none" : "";
+  document.getElementById("symCloud").style.display = on ? "none" : "";
+  document.getElementById("panelActions").style.display = on ? "none" : "";
+  document.getElementById("catQuiz").style.display = on ? "" : "none";
+}
+
+/* 开始一轮分类自测：汇总题库 → 洗牌抽5题 */
+function startCatQuiz(){
+  if(!currentCat){ toast("请先选择一个疾病分类再自测"); return; }
+  const pool = [];
+  DATA.diseases.filter(d => d.cat === currentCat).forEach(d => {
+    (d.quiz || []).forEach(q => pool.push({
+      ...q, src: d.title, warn: d.warn, taboo: d.taboo,
+    }));
+  });
+  if(pool.length < 5){ toast("该分类题目不足，暂时无法自测"); return; }
+  quizItems = shuffle(pool.slice()).slice(0, 5);
+  quizIdx = 0; quizScore = 0; quizAnswered = false; quizChosen = null;
+  setQuizMode(true);
+  renderCatQuiz();
+  document.getElementById("catQuiz").scrollIntoView({behavior:"smooth", block:"center"});
+}
+
+/* 渲染当前题 / 答题反馈 / 最终得分 */
+function renderCatQuiz(){
+  const box = document.getElementById("catQuiz");
+  const cat = DATA.cats.find(c => c.id === currentCat);
+  document.getElementById("checkTitle").innerHTML =
+    `<span class="mini">📝</span>${cat.name} · 分类自测`;
+
+  // 五题答完 → 得分与评级
+  if(quizIdx >= quizItems.length){
+    const sc = quizScore * 20;
+    const tier = sc >= 80 ? "🏆 优秀，掌握良好！"
+               : sc >= 60 ? "👍 不错，重点记禁忌部分！"
+               : "📚 略薄弱，建议重学一遍推断要点！";
+    box.innerHTML = `
+      <div class="quiz-head-row">
+        <span class="quiz-progress">📊 自测完成</span>
+        <button class="quiz-exit" onclick="exitCatQuiz()">✕ 退出自测</button>
+      </div>
+      <div class="quiz-score">
+        <span>得分 ${sc} / 100 分 · 答对 ${quizScore}/${quizItems.length} 题 · ${tier}</span>
+        <button class="quiz-redo" onclick="startCatQuiz()">↻ 换一批重做</button>
+      </div>`;
+    return;
+  }
+
+  const q = quizItems[quizIdx];
+  const clean = t => t.replace(/（[✅❌][^）]*）/g, "");   // 按钮上隐去答案标记，保证作答公平
+  let inner;
+  if(!quizAnswered){
+    inner = `
+      <div class="quiz-opts">
+        <button class="quiz-opt" onclick="answerCatQuiz('A')">A. ${clean(q.a)}</button>
+        <button class="quiz-opt" onclick="answerCatQuiz('B')">B. ${clean(q.b)}</button>
+      </div>`;
+  } else {
+    const ok = quizChosen === q.correct;
+    const cls = ch => q.correct === ch ? "right" : (quizChosen === ch ? "wrong" : "dim");
+    inner = `
+      <div class="quiz-opts">
+        <button class="quiz-opt ${cls("A")}" disabled>A. ${clean(q.a)}</button>
+        <button class="quiz-opt ${cls("B")}" disabled>B. ${clean(q.b)}</button>
+      </div>
+      <div class="quiz-exp-line">
+        ${ok ? '<span class="ans">✅ 答对了！</span>' : '<span class="bad">❌ 答错了。</span>'}
+        <span style="font-size:12px;color:var(--ink-soft)">当前 ${quizScore * 20} 分</span>
+      </div>
+      <div class="quiz-foot">
+        <button class="quiz-next" onclick="nextCatQuiz()">${quizIdx + 1 < quizItems.length ? "下一题 →" : "查看得分 📊"}</button>
+        <button class="quiz-why" onclick="toggleExplain(this)">💡 查看解析</button>
+      </div>
+      <div class="quiz-explain" style="display:none">
+        <div class="quiz-src">🗂 来自常见情况：${q.src}</div>
+        <div>✅ 正确说法：${q.correct === "A" ? q.a : q.b}</div>
+        ${q.warn ? `<div>💡 关联提醒：${q.warn}</div>` : ""}
+        ${q.taboo ? `<div>🚫 相关禁忌：${q.taboo}</div>` : ""}
+      </div>`;
+  }
+  box.innerHTML = `
+    <div class="quiz-head-row">
+      <span class="quiz-progress">第 ${quizIdx + 1}/${quizItems.length} 题 · 每题20分</span>
+      <button class="quiz-exit" onclick="exitCatQuiz()">✕ 退出自测</button>
+    </div>
+    <div class="quiz-q">${q.q}</div>
+    ${inner}`;
+}
+
+function answerCatQuiz(ch){
+  if(quizAnswered) return;
+  quizChosen = ch;
+  quizAnswered = true;
+  if(ch === quizItems[quizIdx].correct) quizScore++;
+  renderCatQuiz();
+}
+function nextCatQuiz(){
+  quizIdx++;
+  quizAnswered = false;
+  quizChosen = null;
+  renderCatQuiz();
+}
+/* 查看/收起解析 */
+function toggleExplain(btn){
+  const panel = btn.parentElement.nextElementSibling;
+  const open = panel.style.display === "none";
+  panel.style.display = open ? "" : "none";
+  btn.textContent = open ? "🔼 收起解析" : "💡 查看解析";
+}
+/* 退出自测，恢复症状勾选界面 */
+function exitCatQuiz(){
+  const cat = DATA.cats.find(c => c.id === currentCat);
+  setQuizMode(false);
+  document.getElementById("checkTitle").innerHTML =
+    `<span class="mini">${cat.icon}</span>${cat.name} · 症状勾选`;
+}
+
+/* ---------- Toast ---------- */
+let toastTimer = null;
+function toast(msg){
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove("show"), 2200);
+}
+
+renderCats();
+</script>
+</body>
+</html>
